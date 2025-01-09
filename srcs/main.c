@@ -22,7 +22,10 @@ void	printHelp(void)
 
 bool	isHelp(const char *str)
 {
-	if (str[0] == '-' && str[1] == '-' && str[2] == 'h'
+	if (getLen(str) != 6)
+		return (false);
+
+	if (str[0] == '-' && str[1] == '-' && str[2] == 'h' \
 		&& str[3] == 'e' && str[4] == 'l' && str[5] == 'p')
 		return (true);
 	
@@ -31,19 +34,21 @@ bool	isHelp(const char *str)
 
 int	main(const int argc, const char** argv)
 {
-	tInfos	infos;
-
-	setToDefault(&infos);
-	if (argc > 1)
+	if (argc == 2 && isHelp(argv[1]) == true)
+		printHelp();
+	else
 	{
-		if (argc == 2 && isHelp(argv[1]) == true)
-			{ printHelp(); return (0); }
+		tInfos	infos;
 
-		getOptions(argv + 1, &infos);
-		getPaths(argv + 1, &infos);
+		setToDefault(&infos);
+		if (argc > 1)
+		{
+			getOptions(argv + 1, &infos);
+			getPaths(argv + 1, &infos);
 
-		if (infos.error == true)
-			return (1);
+			if (infos.error == true)
+				return (1);
+		}
 	}
 
 	return (0);
