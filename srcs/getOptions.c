@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-bool	isValid(const char *str)
+bool	isValidOption(const char *str)
 {
 	if (getLen(str) == 0)
 		return (false);
@@ -64,7 +64,7 @@ void	getOptions(const char** argv, tInfos* infos)
 			|| (argv[i][0] == '-' && argv[i][1] == '\0'))
 			continue ;
 		
-		if (isValid(argv[i] + 1) == false)
+		if (isValidOption(argv[i] + 1) == false)
 		{
 			infos->error = true;
 			if (getLen(argv[i]) > 2 && argv[i][0] == '-' && argv[i][1] == '-')

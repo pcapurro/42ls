@@ -35,7 +35,6 @@ void	getPaths(const char** argv, tInfos* infos)
 			len++;
 	}
 
-	infos->paths = NULL;
 	if (len == 0)
 		return ;
 

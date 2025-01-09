@@ -37,7 +37,7 @@ void	writeStr(const char* str, int fd);
 void	memoryFailed(void);
 void	systemFailed(void);
 
-bool	isValid(const char *str);
+bool	isValidOption(const char *str);
 void	printOptionsError(const int value, const char *str);
 void	getOption(const char* argv, tInfos* infos);
 void	getOptions(const char** argv, tInfos* infos);
