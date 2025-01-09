@@ -7,10 +7,14 @@
 NAME = ft_ls
 
 SRCS = srcs/main.c \
+	srcs/getOptions.c \
+	srcs/getPaths.c \
+	srcs/tools.c \
+	srcs/library.c \
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = #-Wall -Wextra -Werror
 
 ## == .C TO .O == ##
 
