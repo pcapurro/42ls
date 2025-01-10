@@ -43,5 +43,5 @@ void	getPaths(const char** argv, tInfos* infos)
 	else
 		searchForPaths(argv, infos);
 
-	infos->paths[len] = NULL
+	infos->paths[len] = NULL;
 }
