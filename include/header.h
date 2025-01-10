@@ -33,12 +33,15 @@ typedef struct sInfos
 int		getStrLen(const char* str);
 int		getArrLen(char** str);
 char*	getDup(const char* str);
+char*	getJoin(const char* s1, const char* s2);
 void	writeStr(const char* str, int fd);
 
 void	memoryFailed(void);
 void	systemFailed(void);
 
-void	addElement(char*** array, char* element);
+void	*addElement(char*** array, const char* element);
+void	*mergeElements(char*** array1, char*** array2);
+void	freeArray(char** array);
 
 bool	isValidOption(const char *str);
 void	printOptionsError(const int value, const char *str);
