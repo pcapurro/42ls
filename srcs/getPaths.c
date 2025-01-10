@@ -13,11 +13,14 @@ void	searchForPaths(const char** argv, const char** paths)
 	}
 }
 
-bool	isFolder(const char* name, const char* path)
+bool	isFolder(const char* name, const char* path, tInfos* infos)
 {
 	if (name[0] == '.' && name[1] == '\0')
 		return (false);
 	if (name[0] == '.' && name[1] == '.' && name[2] == '\0')
+		return (false);
+
+	if (name[0] == '.' && infos->hidden == false)
 		return (false);
 
 	struct stat		dirInfos;
@@ -29,45 +32,81 @@ bool	isFolder(const char* name, const char* path)
 	return (true);
 }
 
+bool	isSame(char* str1, const char* str2)
+{
+	if (getStrLen(str1) != getStrLen(str2))
+		return (false);
+
+	for (int i = 0; str1[i] != '\0'; i++)
+	{
+		if (str1[i] != str2[i])
+			return (false);
+	}
+
+	return (true);
+}
+
+void	*findElement(char** paths, const char* element)
+{
+	for (int i = 0; paths[i] != NULL; i++)
+	{
+		if (isSame(paths[i], element) == true)
+			return (paths);
+	}
+
+	return (NULL);
+}
+
+char	**getSubDirectories(const char* originalDir, tInfos* infos)
+{
+	char**			newElements = NULL;
+	char*			path = NULL;
+	DIR*			directory;
+	struct dirent*	dirEntry;
+
+	addElement(&newElements, originalDir);
+	for (int i = 0; newElements[i] != NULL; i++)
+	{
+		directory = opendir(newElements[i]);
+		if (directory == NULL)
+			{ free(newElements); return (NULL); }
+
+		while (1)
+		{
+			dirEntry = readdir(directory);
+			if (dirEntry == NULL)
+				break ;
+
+			path = getJoin(newElements[i], dirEntry->d_name);
+			path = getJoin(path, "/");
+			if (!path)
+				{ free(newElements); return (NULL); }
+
+			if (isFolder(dirEntry->d_name, path, infos) == true)
+				addElement(&newElements, path) == NULL;
+			free(path);
+		}
+		closedir(directory);
+	}
+
+	return (newElements);
+}
+
 void	searchForExtraPaths(const char** paths, tInfos* infos)
 {
-	DIR				*directory;
-	struct dirent	*dirEntry;
-
-	const char		*element = NULL;
-	char			*path = NULL;
-	char			**newPaths = NULL;
-	char			**newElements = NULL;
+	const char*		element = NULL;
+	char**			newPaths = NULL;
+	char**			sequence = NULL;
 
 	for (int i = 0; paths[i] != NULL; i++)
 	{
 		element = paths[i];
-		if (addElement(&newPaths, element) == NULL)
-			{ infos->error = true; break ; }
-
 		if (infos->recursive == true)
 		{
-			printf("opening : '%s'\n", element);
-			directory = opendir(element);
-			if (directory == NULL)
-				{ infos->error = true; break ; }
-
-			while (1)
-			{
-				dirEntry = readdir(directory);
-				if (dirEntry == NULL)
-					break ;
-
-				path = getJoin(element, dirEntry->d_name);
-				if (isFolder(dirEntry->d_name, path) == true)
-				{
-					if (addElement(&newElements, path) == NULL)
-						{ infos->error = true; break ; }
-				}
-				free(path);
-			}
-
-			closedir(directory);
+			sequence = getSubDirectories(element, infos);
+			if (sequence == NULL)
+				infos->error = true;
+			mergeElements(&newPaths, &sequence);
 		}
 	}
 	infos->paths = newPaths;

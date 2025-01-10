@@ -48,6 +48,8 @@ void	printOptionsError(const int value, const char *str);
 void	getOption(const char* argv, tInfos* infos);
 void	getOptions(const char** argv, tInfos* infos);
 
+char	**getSubDirectories(const char* originalDir, tInfos* infos);
+void	searchForExtraPaths(const char** paths, tInfos* infos);
 void	searchForPaths(const char** argv, const char** paths);
 void	getPaths(const char** argv, tInfos* infos);
 

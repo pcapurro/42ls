@@ -24,6 +24,9 @@ char*	getJoin(const char* s1, const char* s2)
 	int		len = 0;
 	char	*str = NULL;
 
+	if (!s1 || !s2)
+		return (NULL);
+
 	len =  getStrLen(s1) + getStrLen(s2);
 	str = malloc(sizeof(char) * (len + 1));
 	if (!str)

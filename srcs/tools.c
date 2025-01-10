@@ -28,8 +28,11 @@ void	*mergeElements(char*** array1, char*** array2)
 		memoryFailed();
 	else
 	{
-		for (int k = 0; (*array1)[k] != NULL; k++, i++)
-			newArray[i] = (*array1)[k];
+		if (*array1 != NULL)
+		{
+			for (int k = 0; (*array1)[k] != NULL; k++, i++)
+				newArray[i] = (*array1)[k];
+		}
 		for (int k = 0; (*array2)[k] != NULL; k++, i++)
 			newArray[i] = (*array2)[k];
 
