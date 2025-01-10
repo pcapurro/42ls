@@ -22,7 +22,7 @@ void	printHelp(void)
 
 bool	isHelp(const char *str)
 {
-	if (getLen(str) != 6)
+	if (getStrLen(str) != 6)
 		return (false);
 
 	if (str[0] == '-' && str[1] == '-' && str[2] == 'h' \

@@ -2,7 +2,7 @@
 
 bool	isValidOption(const char *str)
 {
-	if (getLen(str) == 0)
+	if (getStrLen(str) == 0)
 		return (false);
 
 	for (int i = 0; str[i] != '\0'; i++)
@@ -67,7 +67,7 @@ void	getOptions(const char** argv, tInfos* infos)
 		if (isValidOption(argv[i] + 1) == false)
 		{
 			infos->error = true;
-			if (getLen(argv[i]) > 2 && argv[i][0] == '-' && argv[i][1] == '-')
+			if (getStrLen(argv[i]) > 2 && argv[i][0] == '-' && argv[i][1] == '-')
 				printOptionsError(0, argv[i]);
 			else
 				printOptionsError(1, argv[i] + 1);

@@ -17,32 +17,35 @@
 
 typedef struct sInfos
 {
-	bool			listing;
-	bool			recursive;
-	bool			hidden;
-	bool			reverse;
-	bool			time;
+	bool	listing;
+	bool	recursive;
+	bool	hidden;
+	bool	reverse;
+	bool	time;
 
-	bool			options;
-	const char**	paths;
+	bool	options;
+	char**	paths;
 
-	bool			error;
+	bool	error;
 
 }	tInfos;
 
-int		getLen(const char* str);
+int		getStrLen(const char* str);
+int		getArrLen(char** str);
 char*	getDup(const char* str);
 void	writeStr(const char* str, int fd);
 
 void	memoryFailed(void);
 void	systemFailed(void);
 
+void	addElement(char*** array, char* element);
+
 bool	isValidOption(const char *str);
 void	printOptionsError(const int value, const char *str);
 void	getOption(const char* argv, tInfos* infos);
 void	getOptions(const char** argv, tInfos* infos);
 
-void	searchForPaths(const char** argv, tInfos* infos);
+void	searchForPaths(const char** argv, const char** paths);
 void	getPaths(const char** argv, tInfos* infos);
 
 void	setToDefault(tInfos* infos);

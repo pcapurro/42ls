@@ -1,9 +1,18 @@
 #include "../include/header.h"
 
-int		getLen(const char* str)
+int		getStrLen(const char* str)
 {
 	int len = 0;
-	for (int i = 0; str[i] != '\0'; i++)
+	for (int i = 0; str != NULL && str[i] != '\0'; i++)
+		len++;
+
+	return (len);
+}
+
+int		getArrLen(char** str)
+{
+	int len = 0;
+	for (int i = 0; str != NULL && str[i] != NULL; i++)
 		len++;
 
 	return (len);
