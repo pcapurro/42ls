@@ -15,17 +15,21 @@ void	searchForPaths(const char** argv, const char** paths)
 
 bool	isFolder(const char* name, const char* path, tInfos* infos)
 {
-	if (name[0] == '.' && name[1] == '\0')
+	if (getStrLen(name) == 1 \
+		&& name[0] == '.' && name[1] == '\0')
 		return (false);
-	if (name[0] == '.' && name[1] == '.' && name[2] == '\0')
+
+	if (getStrLen(name) == 2 \
+		&& name[0] == '.' && name[1] == '.' && name[2] == '\0')
 		return (false);
 
 	if (name[0] == '.' && infos->hidden == false)
 		return (false);
 
-	struct stat		dirInfos;
+	struct stat	dirInfos;
+	if (stat(path, &dirInfos) == -1)
+		return (false);
 
-	stat(path, &dirInfos);
 	if (S_ISDIR(dirInfos.st_mode) == false)
 		return (false);
 
@@ -64,12 +68,18 @@ char	**getSubDirectories(const char* originalDir, tInfos* infos)
 	DIR*			directory;
 	struct dirent*	dirEntry;
 
-	addElement(&newElements, originalDir);
+	if (addElement(&newElements, originalDir) == NULL)
+	{
+		if (newElements != NULL)
+			free(newElements);
+		return (NULL);
+	}
+
 	for (int i = 0; newElements[i] != NULL; i++)
 	{
 		directory = opendir(newElements[i]);
 		if (directory == NULL)
-			{ free(newElements); return (NULL); }
+			{ free(newElements), closedir(directory); return (NULL); }
 
 		while (1)
 		{
@@ -77,13 +87,15 @@ char	**getSubDirectories(const char* originalDir, tInfos* infos)
 			if (dirEntry == NULL)
 				break ;
 
-			path = getJoin(newElements[i], dirEntry->d_name);
-			path = getJoin(path, "/");
+			path = getJoin(newElements[i], dirEntry->d_name, "/");
 			if (!path)
-				{ free(newElements); return (NULL); }
+				{ free(newElements), closedir(directory); return (NULL); }
 
 			if (isFolder(dirEntry->d_name, path, infos) == true)
-				addElement(&newElements, path) == NULL;
+			{
+				if (addElement(&newElements, path) == NULL)
+					{ free(newElements), free(path); return (NULL); }
+			}
 			free(path);
 		}
 		closedir(directory);
@@ -104,9 +116,8 @@ void	searchForExtraPaths(const char** paths, tInfos* infos)
 		if (infos->recursive == true)
 		{
 			sequence = getSubDirectories(element, infos);
-			if (sequence == NULL)
-				infos->error = true;
-			mergeElements(&newPaths, &sequence);
+			if (sequence == NULL || mergeElements(&newPaths, &sequence) == NULL)
+				{ infos->error = true; break ; }
 		}
 	}
 	infos->paths = newPaths;

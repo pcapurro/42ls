@@ -33,7 +33,7 @@ typedef struct sInfos
 int		getStrLen(const char* str);
 int		getArrLen(char** str);
 char*	getDup(const char* str);
-char*	getJoin(const char* s1, const char* s2);
+char*	getJoin(const char* s1, const char* s2, const char* s3);
 void	writeStr(const char* str, int fd);
 
 void	memoryFailed(void);
@@ -44,7 +44,7 @@ void	*mergeElements(char*** array1, char*** array2);
 void	freeArray(char** array);
 
 bool	isValidOption(const char *str);
-void	printOptionsError(const int value, const char *str);
+void	printOptionsError(const int value, const char* str);
 void	getOption(const char* argv, tInfos* infos);
 void	getOptions(const char** argv, tInfos* infos);
 
@@ -55,7 +55,7 @@ void	getPaths(const char** argv, tInfos* infos);
 
 void	setToDefault(tInfos* infos);
 void	printHelp(void);
-bool	isHelp(const char *str);
+bool	isHelp(const char* str);
 int		main(const int argc, const char** argv);
 
 #endif

@@ -18,16 +18,16 @@ int		getArrLen(char** str)
 	return (len);
 }
 
-char*	getJoin(const char* s1, const char* s2)
+char*	getJoin(const char* s1, const char* s2, const char* s3)
 {
 	int		i = 0;
 	int		len = 0;
 	char	*str = NULL;
 
-	if (!s1 || !s2)
+	if (!s1 || !s2 || !s3)
 		return (NULL);
 
-	len =  getStrLen(s1) + getStrLen(s2);
+	len =  getStrLen(s1) + getStrLen(s2) + getStrLen(s3);
 	str = malloc(sizeof(char) * (len + 1));
 	if (!str)
 		return (NULL);
@@ -36,6 +36,8 @@ char*	getJoin(const char* s1, const char* s2)
 		str[i] = s1[k];
 	for (int k = 0; s2[k] != '\0'; k++, i++)
 		str[i] = s2[k];
+	for (int k = 0; s3[k] != '\0'; k++, i++)
+		str[i] = s3[k];
 	str[len] = '\0';
 
 	return (str);

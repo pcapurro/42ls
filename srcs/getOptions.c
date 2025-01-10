@@ -15,7 +15,7 @@ bool	isValidOption(const char *str)
 	return (true);
 }
 
-void	printOptionsError(const int value, const char *str)
+void	printOptionsError(const int value, const char* str)
 {
 	if (value == 0)
 	{
