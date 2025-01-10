@@ -43,15 +43,15 @@ void	getOption(const char* argv, tInfos* infos)
 	{
 		option = argv[i];
 
-		if (option == 'l')
+		if (option == 'l' && infos->listing == false)
 			infos->listing = true;
-		if (option == 'R')
+		if (option == 'R' && infos->recursive == false)
 			infos->recursive = true;
-		if (option == 'a')
+		if (option == 'a' && infos->hidden == false)
 			infos->hidden = true;
-		if (option == 'r')
+		if (option == 'r' && infos->reverse == false)
 			infos->reverse = true;
-		if (option == 't')
+		if (option == 't' && infos->time == false)
 			infos->time = true;
 	}
 }

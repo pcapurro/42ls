@@ -8,18 +8,7 @@ void	searchForPaths(const char** argv, tInfos* infos)
 			(argv[i][0] == '-' && argv[i][1] != '\0'))
 			continue ;
 
-		infos->paths[j] = getDup(argv[i]);
-		if (!infos->paths[j] || infos->paths[j] == NULL)
-		{
-			infos->error = true;
-			memoryFailed();
-			for (int k = j - 1; k != -1; k--)
-				free(infos->paths[k]);
-			free(infos->paths);
-			infos->paths = NULL;
-
-			return ;
-		}
+		infos->paths[j] = argv[i];
 		j++;
 	}
 }
@@ -36,9 +25,10 @@ void	getPaths(const char** argv, tInfos* infos)
 	}
 
 	if (len == 0)
-		return ;
+		infos->paths = malloc(sizeof(const char *) * 2);
+	else
+		infos->paths = malloc(sizeof(const char *) * (len + 1));
 
-	infos->paths = malloc(sizeof(char *) * (len + 1));
 	if (!infos->paths || infos->paths == NULL)
 	{
 		infos->error = true;
@@ -47,9 +37,11 @@ void	getPaths(const char** argv, tInfos* infos)
 
 		return ;
 	}
+
+	if (len == 0)
+		infos->paths[0] = "./", len++;
 	else
-	{
-		infos->paths[len] = NULL;
 		searchForPaths(argv, infos);
-	}
+
+	infos->paths[len] = NULL
 }

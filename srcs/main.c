@@ -33,7 +33,7 @@ bool	isHelp(const char *str)
 }
 
 int	main(const int argc, const char** argv)
-{
+{	
 	if (argc == 2 && isHelp(argv[1]) == true)
 		printHelp();
 	else
@@ -41,42 +41,35 @@ int	main(const int argc, const char** argv)
 		tInfos	infos;
 
 		setToDefault(&infos);
-		if (argc > 1)
-		{
-			getOptions(argv + 1, &infos);
-			getPaths(argv + 1, &infos);
 
-			if (infos.error == true)
-				return (1);
-		}
+		getPaths(argv + 1, &infos);
+		getOptions(argv + 1, &infos);
+
+		if (infos.error == true)
+			return (1);
 	}
 
 	return (0);
 }
 
-	// printf("paths: \n");
-	// if (infos.paths == NULL)
-	// 	printf(".\n\n");
-	// else
-	// {
-	// 	for (int i = 0; infos.paths[i] != NULL; i++)
-	// 		printf("- '%s'\n", infos.paths[i]);
-	// 	printf("\n");
-	// }
+		// printf("paths: \n");
+		// for (int i = 0; infos.paths[i] != NULL; i++)
+		// 	printf("- '%s'\n", infos.paths[i]);
+		// printf("\n");
 
-	// printf("options: \n");
-	// if (infos.options == false)
-	// 	printf("none\n");
-	// else
-	// {
-	// 	if (infos.listing == true)
-	// 		printf("-l\n");
-	// 	if (infos.recursive == true)
-	// 		printf("-R\n");
-	// 	if (infos.hidden == true)
-	// 		printf("-a\n");
-	// 	if (infos.reverse == true)
-	// 		printf("-r\n");
-	// 	if (infos.time == true)
-	// 		printf("-t\n");
-	// }
+		// printf("options: \n");
+		// if (infos.options == false)
+		// 	printf("none\n");
+		// else
+		// {
+		// 	if (infos.listing == true)
+		// 		printf("-l\n");
+		// 	if (infos.recursive == true)
+		// 		printf("-R\n");
+		// 	if (infos.hidden == true)
+		// 		printf("-a\n");
+		// 	if (infos.reverse == true)
+		// 		printf("-r\n");
+		// 	if (infos.time == true)
+		// 		printf("-t\n");
+		// }

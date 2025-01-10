@@ -17,16 +17,16 @@
 
 typedef struct sInfos
 {
-	bool	listing;
-	bool	recursive;
-	bool	hidden;
-	bool	reverse;
-	bool	time;
+	bool			listing;
+	bool			recursive;
+	bool			hidden;
+	bool			reverse;
+	bool			time;
 
-	bool	options;
-	char**	paths;
+	bool			options;
+	const char**	paths;
 
-	bool	error;
+	bool			error;
 
 }	tInfos;
 
