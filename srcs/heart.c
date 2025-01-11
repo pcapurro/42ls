@@ -6,7 +6,7 @@ char	**initializeSubDirectory(const char* originalDir)
 
 	newElements = malloc(sizeof(char *) * 2);
 	if (!newElements)
-		return (NULL);
+		{ memoryFailed(); return (NULL); }
 
 	if (originalDir[getStrLen(originalDir) - 1] != '/')
 		newElements[0] = getJoin(originalDir, "/", "\0");
@@ -77,8 +77,48 @@ void	getRecursivePaths(tInfos* infos)
 	infos->paths = newPaths;
 }
 
-void	list(tInfos *infos)
+void	orderByTime(tInfos* infos, char ***array)
+{
+	int			len = getArrLen(*array);
+	time_t		time = 0;
+	char		**newPaths = NULL;
+
+	newPaths = malloc(sizeof(char *) * (len + 1));
+	if (!newPaths)
+		{ memoryFailed(); infos->error = true; return ; }
+	newPaths[len] = NULL;
+
+	for (int k = 0, save = 0; k != len; k++, time = 0)
+	{
+		for (int i = 0; i != len; i++)
+		{
+			if ((*array)[i] != NULL)
+			{
+				struct stat	dirInfos;
+				stat((*array)[i], &dirInfos);
+				if (dirInfos.st_mtime > time)
+					time = dirInfos.st_mtime, save = i;
+			}
+		}
+		newPaths[k] = (*array)[save];
+		(*array)[save] = NULL;
+	}
+	free(*array);
+	*array = newPaths;
+}
+
+void	orderByAlph(tInfos* infos, char ***array)
+{
+	;
+}
+
+void	list(tInfos* infos)
 {
 	if (infos->recursive == true)
 		getRecursivePaths(infos);
+
+	if (infos->time == true)
+		orderByTime(infos, &infos->paths);
+	else
+		orderByAlph(infos, &infos->paths);
 }

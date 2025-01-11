@@ -56,6 +56,8 @@ bool	isSame(char* str1, const char* str2);
 
 char	**getSubDirectories(const char* originalDir, tInfos* infos);
 void	getRecursivePaths(tInfos* infos);
+void	orderByTime(tInfos* infos, char ***array);
+void	orderByAlph(tInfos* infos, char ***array);
 void	list(tInfos* infos);
 
 void	setToDefault(tInfos* infos);
