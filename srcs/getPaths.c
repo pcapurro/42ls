@@ -119,6 +119,11 @@ void	searchForExtraPaths(const char** paths, tInfos* infos)
 			if (sequence == NULL || mergeElements(&newPaths, &sequence) == NULL)
 				{ infos->error = true; break ; }
 		}
+		else
+		{
+			if (addElement(&newPaths, element) == NULL)
+				{ infos->error = true; break ; }
+		}
 	}
 	infos->paths = newPaths;
 	free(paths);
