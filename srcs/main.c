@@ -32,7 +32,7 @@ bool	isHelp(const char* str)
 	return (false);
 }
 
-int	main(const int argc, const char** argv)
+int	main(const int argc, char** argv)
 {	
 	if (argc == 2 && isHelp(argv[1]) == true)
 		printHelp();
@@ -45,7 +45,12 @@ int	main(const int argc, const char** argv)
 		getOptions(argv + 1, &infos);
 		getPaths(argv + 1, &infos);
 
-		freeArray(infos.paths);
+		list(&infos);
+
+		if (infos.recursive == true)
+			freeArray(infos.paths);
+		else
+			free(infos.paths);
 
 		if (infos.error == true)
 			return (1);

@@ -1,20 +1,51 @@
 #include "../include/header.h"
 
-void	memoryFailed(void)
+bool	isFolder(const char* name, const char* path, tInfos* infos)
 {
-	writeStr("Error! Memory allocation failed.\n", 2);
+	if (getStrLen(name) == 1 \
+		&& name[0] == '.' && name[1] == '\0')
+		return (false);
+
+	if (getStrLen(name) == 2 \
+		&& name[0] == '.' && name[1] == '.' && name[2] == '\0')
+		return (false);
+
+	if (name[0] == '.' && infos->hidden == false)
+		return (false);
+
+	struct stat	dirInfos;
+	if (stat(path, &dirInfos) == -1)
+		return (false);
+
+	if (S_ISDIR(dirInfos.st_mode) == false)
+		return (false);
+
+	return (true);
 }
 
-void	systemFailed(void)
+bool	isSame(char* str1, const char* str2)
 {
-	writeStr("Error! System failed.\n", 2);
+	if (getStrLen(str1) != getStrLen(str2))
+		return (false);
+
+	for (int i = 0; str1[i] != '\0'; i++)
+	{
+		if (str1[i] != str2[i])
+			return (false);
+	}
+
+	return (true);
 }
 
-void	freeArray(char** array)
+void	*findElement(char** paths, const char* element)
 {
-	for (int i = 0; array != NULL && array[i] != NULL; i++)
-		free(array[i]);
-	free(array);
+	for (int i = 0; paths[i] != NULL; i++)
+	{
+		if (isSame(paths[i], element) == true)
+			return (paths);
+	}
+
+	return (NULL);
 }
 
 void	*mergeElements(char*** array1, char*** array2)
@@ -72,4 +103,23 @@ void	*addElement(char*** array, const char* element)
 	}
 
 	return (newArray);
+}
+
+void	freeArray(char** array)
+{
+	for (int i = 0; array != NULL && array[i] != NULL; i++)
+		free(array[i]);
+
+	if (array != NULL)
+		free(array);
+}
+
+void	memoryFailed(void)
+{
+	writeStr("Error! Memory allocation failed.\n", 2);
+}
+
+void	systemFailed(void)
+{
+	writeStr("Error! System failed.\n", 2);
 }

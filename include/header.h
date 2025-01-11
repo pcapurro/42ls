@@ -45,17 +45,23 @@ void	freeArray(char** array);
 
 bool	isValidOption(const char *str);
 void	printOptionsError(const int value, const char* str);
-void	getOption(const char* argv, tInfos* infos);
-void	getOptions(const char** argv, tInfos* infos);
+void	getOption(char* argv, tInfos* infos);
+void	getOptions(char** argv, tInfos* infos);
+
+void	searchForPaths(char** argv, tInfos* infos);
+void	getPaths(char** argv, tInfos* infos);
+
+bool	isFolder(const char* name, const char* path, tInfos* infos);
+bool	isSame(char* str1, const char* str2);
 
 char	**getSubDirectories(const char* originalDir, tInfos* infos);
-void	searchForExtraPaths(const char** paths, tInfos* infos);
-void	searchForPaths(const char** argv, const char** paths);
-void	getPaths(const char** argv, tInfos* infos);
+void	getRecursivePaths(tInfos* infos);
+void	list(tInfos* infos);
 
 void	setToDefault(tInfos* infos);
 void	printHelp(void);
 bool	isHelp(const char* str);
-int		main(const int argc, const char** argv);
+
+int		main(const int argc, char** argv);
 
 #endif

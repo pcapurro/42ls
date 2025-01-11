@@ -32,7 +32,7 @@ void	printOptionsError(const int value, const char* str)
 	writeStr("Type 'ft_ls --help' for more informations.\n", 2);
 }
 
-void	getOption(const char* argv, tInfos* infos)
+void	getOption(char* argv, tInfos* infos)
 {
 	char	option;
 
@@ -56,7 +56,7 @@ void	getOption(const char* argv, tInfos* infos)
 	}
 }
 
-void	getOptions(const char** argv, tInfos* infos)
+void	getOptions(char** argv, tInfos* infos)
 {
 	for (int i = 0; argv[i] != NULL; i++)
 	{
