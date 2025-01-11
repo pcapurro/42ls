@@ -1,5 +1,25 @@
 #include "../include/header.h"
 
+char	**initializeSubDirectory(const char* originalDir)
+{
+	char**	newElements = NULL;
+
+	newElements = malloc(sizeof(char *) * 2);
+	if (!newElements)
+		return (NULL);
+
+	if (originalDir[getStrLen(originalDir) - 1] != '/')
+		newElements[0] = getJoin(originalDir, "/", "\0");
+	else
+		newElements[0] = getDup(originalDir);
+	newElements[1] = NULL;
+
+	if (newElements[0] == NULL)
+		return (NULL);
+
+	return (newElements);
+}
+
 char	**getSubDirectories(const char* originalDir, tInfos* infos)
 {
 	char**			newElements = NULL;
@@ -7,12 +27,9 @@ char	**getSubDirectories(const char* originalDir, tInfos* infos)
 	DIR*			directory;
 	struct dirent*	dirEntry;
 
-	if (addElement(&newElements, originalDir) == NULL)
-	{
-		if (newElements != NULL)
-			free(newElements);
+	newElements = initializeSubDirectory(originalDir);
+	if (!newElements)
 		return (NULL);
-	}
 
 	for (int i = 0; newElements[i] != NULL; i++)
 	{
@@ -52,17 +69,9 @@ void	getRecursivePaths(tInfos* infos)
 	for (int i = 0; infos->paths[i] != NULL; i++)
 	{
 		element = infos->paths[i];
-		if (infos->recursive == true)
-		{
-			sequence = getSubDirectories(element, infos);
-			if (sequence == NULL || mergeElements(&newPaths, &sequence) == NULL)
-				{ infos->error = true; break ; }
-		}
-		else
-		{
-			if (addElement(&newPaths, element) == NULL)
-				{ infos->error = true; break ; }
-		}
+		sequence = getSubDirectories(element, infos);
+		if (sequence == NULL || mergeElements(&newPaths, &sequence) == NULL)
+			{ infos->error = true; break ; }
 	}
 	free(infos->paths);
 	infos->paths = newPaths;
