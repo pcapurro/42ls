@@ -43,6 +43,9 @@ int	main(const int argc, char** argv)
 		setToDefault(&infos);
 
 		getOptions(argv + 1, &infos);
+		if (infos.error == true)
+			return (2);
+
 		getPaths(argv + 1, &infos);
 
 		list(&infos);

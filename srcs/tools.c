@@ -37,17 +37,6 @@ bool	isSame(char* str1, const char* str2)
 	return (true);
 }
 
-void	*findElement(char** paths, const char* element)
-{
-	for (int i = 0; paths[i] != NULL; i++)
-	{
-		if (isSame(paths[i], element) == true)
-			return (paths);
-	}
-
-	return (NULL);
-}
-
 void	*mergeElements(char*** array1, char*** array2)
 {
 	int		i = 0;

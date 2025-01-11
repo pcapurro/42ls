@@ -8,6 +8,7 @@ NAME = ft_ls
 
 SRCS = srcs/main.c \
 	srcs/heart.c \
+	srcs/order.c \
 	srcs/getOptions.c \
 	srcs/getPaths.c \
 	srcs/tools.c \

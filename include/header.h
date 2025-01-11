@@ -54,10 +54,13 @@ void	getPaths(char** argv, tInfos* infos);
 bool	isFolder(const char* name, const char* path, tInfos* infos);
 bool	isSame(char* str1, const char* str2);
 
+void	orderByTime(tInfos* infos, char*** array);
+char*	getTopOrder(char **array);
+void	orderByAlph(tInfos* infos, char*** array);
+
 char	**getSubDirectories(const char* originalDir, tInfos* infos);
 void	getRecursivePaths(tInfos* infos);
-void	orderByTime(tInfos* infos, char ***array);
-void	orderByAlph(tInfos* infos, char ***array);
+
 void	list(tInfos* infos);
 
 void	setToDefault(tInfos* infos);
