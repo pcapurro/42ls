@@ -56,13 +56,19 @@ char**	getFolderElements(tInfos* infos, DIR* directory, char* originalPath)
 	return (newElements);
 }
 
-void	list(tInfos* infos, char** paths)
+void	list(tInfos* infos, char** paths, int value)
 {
 	DIR*		directory;
 	char**		newPaths = NULL;
 
+	if (infos->recursive == true && value == true)
+		writeStr("\n", 1);
+
 	for (int i = 0; paths[i] != NULL; i++)
 	{
+		if (paths[i][getStrLen(paths[i]) - 1] != '/')
+			continue ;
+
 		directory = opendir(paths[i]);
 		if (directory == NULL)
 			printListError(paths[i]);
@@ -71,5 +77,27 @@ void	list(tInfos* infos, char** paths)
 			writeStr(paths[i], 1), writeStr(":\n", 1);
 
 		newPaths = getFolderElements(infos, directory, paths[i]);
+		if (newPaths == NULL)
+		{
+			if (value == true)
+				return ;
+			continue ;
+		}
+
+		for (int k = 0; newPaths[k] != NULL; k++)
+			printElement(infos, newPaths[k]);
+		writeStr("\n", 1);
+
+		if (infos->recursive == true)
+		{
+			for (int k = 0; newPaths[k] != NULL; k++)
+			{
+				if (newPaths[k][getStrLen(newPaths[k]) - 1] == '/')
+					list(infos, newPaths + k, true);
+			}
+		}
+
+		if (value == true)
+			return ;
 	}
 }

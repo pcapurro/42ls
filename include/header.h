@@ -60,7 +60,7 @@ bool	isSame(char* str1, const char* str2);
 void	orderByTime(tInfos* infos, char*** array);
 void	orderByAlph(tInfos* infos, char*** array);
 
-void	list(tInfos* infos, char** paths);
+void	list(tInfos* infos, char** paths, int value);
 
 void	setToDefault(tInfos* infos);
 void	printHelp(void);
