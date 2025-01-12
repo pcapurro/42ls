@@ -71,7 +71,13 @@ void	list(tInfos* infos, char** paths, int value)
 
 		directory = opendir(paths[i]);
 		if (directory == NULL)
+		{
 			printListError(paths[i]);
+			
+			if (value == true)
+				return ;
+			continue ;
+		}
 
 		if (getArrLen(paths) > 1 || infos->recursive == true)
 			writeStr(paths[i], 1), writeStr(":\n", 1);
@@ -83,6 +89,11 @@ void	list(tInfos* infos, char** paths, int value)
 				return ;
 			continue ;
 		}
+
+		if (infos->time == true)
+			orderByTime(infos, &newPaths);
+		else
+			orderByAlph(infos, &newPaths);
 
 		for (int k = 0; newPaths[k] != NULL; k++)
 			printElement(infos, newPaths[k]);
