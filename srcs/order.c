@@ -38,7 +38,7 @@ void	orderByAlph(tInfos* infos, char*** array)
 	for (int i = 0, save = 0; (*array)[i] != NULL; i++, save = 0)
 	{
 		int count = 0;
-		for (int k = 0, value = 127; count != 1; k++)
+		for (int k = 0, value = 127; count != 1; k++, value = 127)
 		{
 			count = 0;
 			for (int i = 0; (*array)[i] != NULL; i++)
