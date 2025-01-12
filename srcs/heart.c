@@ -35,7 +35,7 @@ char	**getSubDirectories(const char* originalDir, tInfos* infos)
 	{
 		directory = opendir(newElements[i]);
 		if (directory == NULL)
-			{ free(newElements), closedir(directory); return (NULL); }
+			continue ;
 
 		while (1)
 		{
@@ -47,7 +47,7 @@ char	**getSubDirectories(const char* originalDir, tInfos* infos)
 			if (!path)
 				{ free(newElements), closedir(directory); return (NULL); }
 
-			if (isFolder(dirEntry->d_name, path, infos) == true)
+			if (isFolder(dirEntry->d_name, dirEntry->d_type, infos) == true)
 			{
 				if (addElement(&newElements, path) == NULL)
 					{ free(newElements), free(path); return (NULL); }

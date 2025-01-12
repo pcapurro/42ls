@@ -51,7 +51,7 @@ void	getOptions(char** argv, tInfos* infos);
 void	searchForPaths(char** argv, tInfos* infos);
 void	getPaths(char** argv, tInfos* infos);
 
-bool	isFolder(const char* name, const char* path, tInfos* infos);
+bool	isFolder(const char* name, const unsigned type, tInfos* infos);
 bool	isSame(char* str1, const char* str2);
 
 void	orderByTime(tInfos* infos, char*** array);

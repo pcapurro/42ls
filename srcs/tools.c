@@ -1,6 +1,6 @@
 #include "../include/header.h"
 
-bool	isFolder(const char* name, const char* path, tInfos* infos)
+bool	isFolder(const char* name, const unsigned type, tInfos* infos)
 {
 	if (getStrLen(name) == 1 \
 		&& name[0] == '.' && name[1] == '\0')
@@ -13,11 +13,7 @@ bool	isFolder(const char* name, const char* path, tInfos* infos)
 	if (name[0] == '.' && infos->hidden == false)
 		return (false);
 
-	struct stat	dirInfos;
-	if (stat(path, &dirInfos) == -1)
-		return (false);
-
-	if (S_ISDIR(dirInfos.st_mode) == false)
+	if (type != DT_DIR)
 		return (false);
 
 	return (true);
