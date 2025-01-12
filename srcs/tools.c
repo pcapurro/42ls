@@ -90,13 +90,11 @@ void	*addElement(char*** array, const char* element)
 	return (newArray);
 }
 
-void	freeArray(char** array)
+void	freeArray(tInfos* infos)
 {
-	for (int i = 0; array != NULL && array[i] != NULL; i++)
-		free(array[i]);
-
-	if (array != NULL)
-		free(array);
+	for (int i = 0; infos->paths[i] != NULL; i++)
+		free(infos->paths[i]);
+	free(infos->paths);
 }
 
 void	memoryFailed(void)

@@ -8,7 +8,9 @@ void	searchForPaths(char** argv, tInfos* infos)
 			(argv[i][0] == '-' && argv[i][1] != '\0'))
 			continue ;
 
-		infos->paths[j] = argv[i];
+		infos->paths[j] = getDup(argv[i]);
+		if (!infos->paths[j])
+			{ infos->error = true; return ; }
 		j++;
 	}
 }
@@ -39,7 +41,7 @@ void	getPaths(char** argv, tInfos* infos)
 	}
 
 	if (len == 0)
-		infos->paths[0] = "./", len++;
+		infos->paths[0] = getDup("./"), len++;
 	else
 		searchForPaths(argv, infos);
 	infos->paths[len] = NULL;

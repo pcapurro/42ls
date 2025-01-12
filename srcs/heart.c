@@ -104,36 +104,51 @@ void	printElement(tInfos* infos, t_dirent* dirEntry)
 		writeStr("\n", 1);
 }
 
-void	list(tInfos* infos)
+void	list(tInfos* infos, char** paths)
 {
 	DIR*		directory;
 	t_dirent*	dirEntry;
+	char**		newPaths = NULL;
 
-	for (int i = 0; infos->paths[i] != NULL; i++)
+	for (int i = 0; paths[i] != NULL; i++)
 	{
-		directory = opendir(infos->paths[i]);
+		directory = opendir(paths[i]);
 		if (directory == NULL)
-			{ printListError(infos->paths[i]); continue ; }
+			{ printListError(paths[i]); continue ; }
 
-		if (getArrLen(infos->paths) > 1)
-			writeStr(infos->paths[i], 1), writeStr(":\n", 1);
+		if (getArrLen(paths) > 1)
+			writeStr(paths[i], 1), writeStr(":\n", 1);
 
 		while (1)
 		{
 			dirEntry = readdir(directory);
 			if (dirEntry == NULL)
 				break ;
-			
+
 			if (infos->hidden == false \
 				&& dirEntry->d_name[0] == '.')
 				continue ;
 
-			printElement(infos, dirEntry);
+			addElement(&newPaths, dirEntry->d_name);
 		}
+
+		if (infos->time == true)
+			orderByTime(infos, &newPaths);
+		else
+			orderByAlph(infos, &newPaths);
+
+		for (int k = 0; newPaths[k] != NULL; k++)
+		{
+			if (infos->recursive == true && dirEntry->d_type == DT_DIR)
+				list(infos, newPaths + k);
+			else
+				printElement(infos, dirEntry);
+		}
+		newPaths = NULL;
 
 		if (infos->listing == false)
 			writeStr("\n", 1);
-		if (getArrLen(infos->paths) > 1 && infos->paths[i + 1] != NULL)
+		if (getArrLen(paths) > 1 && paths[i + 1] != NULL)
 			writeStr("\n", 1);
 	}
 }

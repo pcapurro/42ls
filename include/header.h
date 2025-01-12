@@ -43,7 +43,7 @@ void	systemFailed(void);
 
 void	*addElement(char*** array, const char* element);
 void	*mergeElements(char*** array1, char*** array2);
-void	freeArray(char** array);
+void	freeArray(tInfos* infos);
 
 bool	isValidOption(const char *str);
 void	printOptionsError(const int value, const char* str);
@@ -63,7 +63,7 @@ void	orderByAlph(tInfos* infos, char*** array);
 char	**getSubDirectories(const char* originalDir, tInfos* infos);
 void	listRecursively(tInfos* infos);
 
-void	list(tInfos* infos);
+void	list(tInfos* infos, char** paths);
 
 void	setToDefault(tInfos* infos);
 void	printHelp(void);

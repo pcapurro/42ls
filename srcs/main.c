@@ -48,12 +48,9 @@ int	main(const int argc, char** argv)
 
 		getPaths(argv + 1, &infos);
 
-		list(&infos);
+		list(&infos, infos.paths);
 
-		if (infos.recursive == true)
-			freeArray(infos.paths);
-		else
-			free(infos.paths);
+		freeArray(&infos);
 
 		if (infos.error == true)
 			return (1);
