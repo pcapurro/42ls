@@ -86,17 +86,17 @@ void	printListError(const char* element)
 	perror("");
 }
 
-void	printElement(tInfos* infos, t_dirent* dirEntry)
+void	printElement(tInfos* infos, char* path)
 {
-	if (dirEntry->d_type == DT_DIR)
-	{
-		writeStr("\033[1m", 1);
-		writeStr("\033[34m", 1);
-		writeStr(dirEntry->d_name, 1);
-		writeStr("\033[0m", 1);
-	}
-	else
-		writeStr(dirEntry->d_name, 1);
+	int i = getStrLen(path) - 1;
+	while (i != 0 && path[i] != '/')
+		i--;
+
+	char* name = path + i;
+	if (i != 0)
+		name = name + 1;
+
+	writeStr(name, 1);
 
 	if (infos->listing == false)
 		writeStr("  ", 1);
@@ -142,7 +142,7 @@ void	list(tInfos* infos, char** paths)
 			if (infos->recursive == true && dirEntry->d_type == DT_DIR)
 				list(infos, newPaths + k);
 			else
-				printElement(infos, dirEntry);
+				printElement(infos, newPaths[k]);
 		}
 		newPaths = NULL;
 

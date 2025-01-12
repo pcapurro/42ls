@@ -50,7 +50,9 @@ int	main(const int argc, char** argv)
 
 		list(&infos, infos.paths);
 
-		freeArray(&infos);
+		for (int i = 0; infos.paths[i] != NULL; i++)
+			free(infos.paths[i]);
+		free(infos.paths);
 
 		if (infos.error == true)
 			return (1);

@@ -33,7 +33,7 @@ bool	isSame(char* str1, const char* str2)
 	return (true);
 }
 
-void	*mergeElements(char*** array1, char*** array2)
+void*	mergeElements(char*** array1, char*** array2)
 {
 	int		i = 0;
 	int		len = getArrLen(*array1) + getArrLen(*array2);
@@ -63,7 +63,7 @@ void	*mergeElements(char*** array1, char*** array2)
 	return (newArray);
 }
 
-void	*addElement(char*** array, const char* element)
+void*	addElement(char*** array, const char* element)
 {
 	int		len = getArrLen(*array);
 	char	**newArray = NULL;
@@ -90,11 +90,25 @@ void	*addElement(char*** array, const char* element)
 	return (newArray);
 }
 
-void	freeArray(tInfos* infos)
+void*	findElement(char** array, char* element)
 {
-	for (int i = 0; infos->paths[i] != NULL; i++)
-		free(infos->paths[i]);
-	free(infos->paths);
+	if (array == NULL)
+		return (NULL);
+
+	for (int i = 0; array[i] != NULL; i++)
+	{
+		if (isSame(array[i], element) == true)
+			return (array[i]);
+	}
+
+	return (NULL);
+}
+
+void	freeArray(char*** array)
+{
+	for (int i = 0; (*array)[i] != NULL; i++)
+		free((*array)[i]);
+	free(*array);
 }
 
 void	memoryFailed(void)

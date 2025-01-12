@@ -30,82 +30,31 @@ void	orderByTime(tInfos* infos, char*** array)
 	*array = newPaths;
 }
 
-char*	getTopOrder(char **array)
-{
-	if (getArrLen(array) == 1)
-		return (array[0]);
-
-	int	value;
-	int count = 0, save = 0;
-
-	for (int k = 0; count != 1; k++)
-	{
-		value = 127;
-		count = 0;
-		for (int i = 0; array[i] != NULL; i++)
-		{
-			if (array[i][k] < value)
-				value = array[i][k];
-		}
-		for (int i = 0; array[i] != NULL; i++)
-		{
-			if (array[i][k] == value)
-				count++, save = i;
-		}
-	}
-
-	return (array[save]);
-}
-
 void	orderByAlph(tInfos* infos, char*** array)
 {
-	int			len = getArrLen(*array);
-	char**		newArray = NULL;
-	char**		orderedArray = NULL;
+	char**	newArray = NULL;
+	char*	element = NULL;
 
-	newArray = malloc(sizeof(char *) * (len + 1));
-	if (!newArray)
-		{ memoryFailed(); infos->error = true; return ; }
-	for (int i = 0; i != len; i++)
-		newArray[i] = NULL;
-	newArray[len] = NULL;
-
-	for (int value = 127; getArrLen(newArray) != len;)
+	for (int i = 0, save = 0; (*array)[i] != NULL; i++, save = 0)
 	{
-		orderedArray = malloc(sizeof(char *) * (len + 1));
-		if (!orderedArray)
-			{ memoryFailed(); infos->error = true; return ; }
-		for (int i = 0; i != len; i++)
-			orderedArray[i] = NULL;
-		orderedArray[len] = NULL;
-
-		for (int i = 0; i != len; i++)
+		int count = 0;
+		for (int k = 0, value = 127; count != 1; k++)
 		{
-			if ((*array)[i] != NULL && (*array)[i][0] < value)
-				value = (*array)[i][0];
-		}
-		for (int i = 0, k = 0; i != len; i++, k = 0)
-		{
-			if ((*array)[i] != NULL && (*array)[i][0] == value)
+			count = 0;
+			for (int i = 0; (*array)[i] != NULL; i++)
 			{
-				while (orderedArray[k] != NULL)
-					k++;
-				orderedArray[k] = (*array)[i];
+				if (findElement(newArray, (*array)[i]) == NULL && (*array)[i][k] < value)
+					value = (*array)[i][k];
+			}
+			for (int i = 0; (*array)[i] != NULL; i++)
+			{
+				if (findElement(newArray, (*array)[i]) == NULL && (*array)[i][k] == value)
+					count++, save = i;
 			}
 		}
-
-		char* element = getTopOrder(orderedArray);
-		for (int i = 0; i != len; i++)
-		{
-			if (newArray[i] == NULL)
-				{ newArray[i] = element ; break; };
-		}
-		for (int i = 0; i != len; i++)
-		{
-			if ((*array)[i] != NULL && element == (*array)[i])
-				(*array)[i] = NULL;
-		}
-		orderedArray = NULL;
+		element = (*array)[save];
+		addElement(&newArray, element);
 	}
+	freeArray(array);
 	*array = newArray;
 }

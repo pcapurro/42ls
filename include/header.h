@@ -41,9 +41,11 @@ void	writeStr(const char* str, int fd);
 void	memoryFailed(void);
 void	systemFailed(void);
 
-void	*addElement(char*** array, const char* element);
-void	*mergeElements(char*** array1, char*** array2);
-void	freeArray(tInfos* infos);
+void*	addElement(char*** array, const char* element);
+void*	mergeElements(char*** array1, char*** array2);
+void*	findElement(char** array, char* element);
+
+void	freeArray(char*** array);
 
 bool	isValidOption(const char *str);
 void	printOptionsError(const int value, const char* str);
@@ -57,10 +59,9 @@ bool	isFolder(const char* name, const unsigned type, tInfos* infos);
 bool	isSame(char* str1, const char* str2);
 
 void	orderByTime(tInfos* infos, char*** array);
-char*	getTopOrder(char **array);
 void	orderByAlph(tInfos* infos, char*** array);
 
-char	**getSubDirectories(const char* originalDir, tInfos* infos);
+char**	getSubDirectories(const char* originalDir, tInfos* infos);
 void	listRecursively(tInfos* infos);
 
 void	list(tInfos* infos, char** paths);
