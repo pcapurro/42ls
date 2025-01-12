@@ -64,7 +64,7 @@ void	list(tInfos* infos, char** paths)
 		}
 
 		if (newPaths == NULL)
-			continue ;
+			{ printf("\n"); continue ; }
 
 		if (infos->time == true)
 			orderByTime(infos, &newPaths);

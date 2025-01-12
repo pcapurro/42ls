@@ -48,7 +48,7 @@ int	main(const int argc, char** argv)
 
 		getPaths(argv + 1, &infos);
 
-		list(&infos, infos.paths, false);
+		list(&infos, infos.paths);
 
 		for (int i = 0; infos.paths[i] != NULL; i++)
 			free(infos.paths[i]);
