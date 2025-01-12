@@ -33,36 +33,6 @@ bool	isSame(char* str1, const char* str2)
 	return (true);
 }
 
-void*	mergeElements(char*** array1, char*** array2)
-{
-	int		i = 0;
-	int		len = getArrLen(*array1) + getArrLen(*array2);
-	char	**newArray = NULL;
-
-	newArray = malloc(sizeof(char *) * (len + 1));
-	if (!newArray)
-		memoryFailed();
-	else
-	{
-		if (*array1 != NULL)
-		{
-			for (int k = 0; (*array1)[k] != NULL; k++, i++)
-				newArray[i] = (*array1)[k];
-		}
-		for (int k = 0; (*array2)[k] != NULL; k++, i++)
-			newArray[i] = (*array2)[k];
-
-		newArray[len] = NULL;
-
-		free(*array1);
-		*array1 = newArray;
-		free(*array2);
-		*array2 = NULL;
-	}
-
-	return (newArray);
-}
-
 void*	addElement(char*** array, const char* element)
 {
 	int		len = getArrLen(*array);
