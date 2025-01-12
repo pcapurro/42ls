@@ -52,7 +52,9 @@ char**	getFolderElements(tInfos* infos, DIR* directory, char* originalPath)
 			element = getJoin(originalPath, dirEntry->d_name, "/");
 		else
 			element = getJoin(originalPath, dirEntry->d_name, "\0");
+
 		addElement(&newElements, element);
+		free(element);
 	}
 
 	return (newElements);
@@ -111,15 +113,16 @@ void	list(tInfos* infos, char** paths, int value)
 		newPaths = getFolderElements(infos, directory, paths[i]);
 		if (newPaths == NULL)
 		{
+			closedir(directory);
 			if (value == true)
 				return ;
 			continue ;
 		}
 
-		if (infos->time == true)
-			orderByTime(infos, &newPaths);
-		else
-			orderByAlph(infos, &newPaths);
+		// if (infos->time == true)
+		// 	orderByTime(infos, &newPaths);
+		// else
+		// 	orderByAlph(infos, &newPaths);
 
 		for (int k = 0; newPaths[k] != NULL; k++)
 			printElement(infos, newPaths[k]);
@@ -134,6 +137,9 @@ void	list(tInfos* infos, char** paths, int value)
 					list(infos, newPaths + k, true);
 			}
 		}
+
+		freeArray(&newPaths);
+		closedir(directory);
 
 		if (value == true)
 			return ;
