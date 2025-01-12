@@ -22,10 +22,10 @@ char	**initializeSubDirectory(const char* originalDir)
 
 char	**getSubDirectories(const char* originalDir, tInfos* infos)
 {
-	char**			newElements = NULL;
-	char*			path = NULL;
-	DIR*			directory;
-	struct dirent*	dirEntry;
+	char**		newElements = NULL;
+	char*		path = NULL;
+	DIR*		directory;
+	t_dirent*	dirEntry;
 
 	newElements = initializeSubDirectory(originalDir);
 	if (!newElements)
@@ -60,7 +60,7 @@ char	**getSubDirectories(const char* originalDir, tInfos* infos)
 	return (newElements);
 }
 
-void	getRecursivePaths(tInfos* infos)
+void	listRecursively(tInfos* infos)
 {
 	const char*		element = NULL;
 	char**			newPaths = NULL;
@@ -77,16 +77,63 @@ void	getRecursivePaths(tInfos* infos)
 	infos->paths = newPaths;
 }
 
+void	printListError(const char* element)
+{
+	writeStr("ft_ls: unable to access '", 2);
+	writeStr(element, 2);
+	writeStr("': ", 2);
+
+	perror("");
+}
+
+void	printElement(tInfos* infos, t_dirent* dirEntry)
+{
+	if (dirEntry->d_type == DT_DIR)
+	{
+		writeStr("\033[1m", 1);
+		writeStr("\033[34m", 1);
+		writeStr(dirEntry->d_name, 1);
+		writeStr("\033[0m", 1);
+	}
+	else
+		writeStr(dirEntry->d_name, 1);
+
+	if (infos->listing == false)
+		writeStr("  ", 1);
+	else
+		writeStr("\n", 1);
+}
+
 void	list(tInfos* infos)
 {
-	if (infos->recursive == true)
-		getRecursivePaths(infos);
+	DIR*		directory;
+	t_dirent*	dirEntry;
 
-	if (infos->error == true)
-		return ;
+	for (int i = 0; infos->paths[i] != NULL; i++)
+	{
+		directory = opendir(infos->paths[i]);
+		if (directory == NULL)
+			{ printListError(infos->paths[i]); continue ; }
 
-	if (infos->time == true)
-		orderByTime(infos, &infos->paths);
-	else
-		orderByAlph(infos, &infos->paths);
+		if (getArrLen(infos->paths) > 1)
+			writeStr(infos->paths[i], 1), writeStr(":\n", 1);
+
+		while (1)
+		{
+			dirEntry = readdir(directory);
+			if (dirEntry == NULL)
+				break ;
+			
+			if (infos->hidden == false \
+				&& dirEntry->d_name[0] == '.')
+				continue ;
+
+			printElement(infos, dirEntry);
+		}
+
+		if (infos->listing == false)
+			writeStr("\n", 1);
+		if (getArrLen(infos->paths) > 1 && infos->paths[i + 1] != NULL)
+			writeStr("\n", 1);
+	}
 }

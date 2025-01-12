@@ -15,6 +15,8 @@
 # include <sys/stat.h>
 # include <sys/xattr.h>
 
+typedef struct dirent t_dirent;
+
 typedef struct sInfos
 {
 	bool	listing;
@@ -59,7 +61,7 @@ char*	getTopOrder(char **array);
 void	orderByAlph(tInfos* infos, char*** array);
 
 char	**getSubDirectories(const char* originalDir, tInfos* infos);
-void	getRecursivePaths(tInfos* infos);
+void	listRecursively(tInfos* infos);
 
 void	list(tInfos* infos);
 
