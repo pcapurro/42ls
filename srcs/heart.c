@@ -89,6 +89,9 @@ void	printListError(const char* element)
 void	printElement(tInfos* infos, char* path)
 {
 	int i = getStrLen(path) - 1;
+
+	if (path[i] == '/' && i != 0)
+		i--;
 	while (i != 0 && path[i] != '/')
 		i--;
 
@@ -109,6 +112,7 @@ void	list(tInfos* infos, char** paths)
 	DIR*		directory;
 	t_dirent*	dirEntry;
 	char**		newPaths = NULL;
+	char*		element = NULL;
 
 	for (int i = 0; paths[i] != NULL; i++)
 	{
@@ -129,7 +133,10 @@ void	list(tInfos* infos, char** paths)
 				&& dirEntry->d_name[0] == '.')
 				continue ;
 
-			addElement(&newPaths, dirEntry->d_name);
+			element = dirEntry->d_name;
+			if (dirEntry->d_type == DT_DIR)
+				element = getJoin(dirEntry->d_name, "/", "\0");
+			addElement(&newPaths, element);
 		}
 
 		if (infos->time == true)
@@ -139,7 +146,7 @@ void	list(tInfos* infos, char** paths)
 
 		for (int k = 0; newPaths[k] != NULL; k++)
 		{
-			if (infos->recursive == true && dirEntry->d_type == DT_DIR)
+			if (infos->recursive == true && newPaths[k][getStrLen(newPaths[k]) - 1] == '/')
 				list(infos, newPaths + k);
 			else
 				printElement(infos, newPaths[k]);
