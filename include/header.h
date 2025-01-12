@@ -64,7 +64,7 @@ void	orderByAlph(tInfos* infos, char*** array);
 char**	getSubDirectories(const char* originalDir, tInfos* infos);
 void	listRecursively(tInfos* infos);
 
-void	list(tInfos* infos, char** paths);
+void	list(tInfos* infos, char** paths, int value);
 
 void	setToDefault(tInfos* infos);
 void	printHelp(void);
