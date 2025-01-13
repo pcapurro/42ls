@@ -83,6 +83,34 @@ char*	getName(char* path)
 	return (name);
 }
 
+void	printFolder(tInfos* infos, char** paths)
+{
+	int		len = getArrLen(paths);
+	char**	newArray;
+
+	newArray = malloc(sizeof(char*) * (len + 1));
+	if (!newArray)
+		return ;
+	for (int i = 0; paths[i] != NULL; i++)
+		newArray[i] = paths[i];
+	newArray[len] = NULL;
+
+	for (int count = 0, element = 0; count != len; count++)
+	{
+		if (infos->time == true)
+			element = getElementInTimeOrder(newArray, len);
+		else
+			element = getElementInAlphOrder(newArray, len);
+
+		if (element != -1)
+			printElement(infos, newArray[element]);
+
+		newArray[element] = NULL;
+	}
+
+	writeStr("\n", 1);
+}
+
 void	list(tInfos* infos, char** paths, int value)
 {
 	DIR*		directory;
@@ -118,14 +146,7 @@ void	list(tInfos* infos, char** paths, int value)
 			continue ;
 		}
 
-		if (infos->time == true)
-			orderByTime(infos, &newPaths);
-		else
-			orderByAlph(infos, &newPaths);
-
-		for (int k = 0; newPaths[k] != NULL; k++)
-			printElement(infos, newPaths[k]);
-		writeStr("\n", 1);
+		printFolder(infos, newPaths);
 
 		if (infos->recursive == true)
 		{

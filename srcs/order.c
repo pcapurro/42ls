@@ -1,69 +1,53 @@
 #include "../include/header.h"
 
-void	orderByTime(tInfos* infos, char*** array)
+int	getElementInTimeOrder(char** array, const int pathsLen)
 {
-	int			len = getArrLen(*array);
-	time_t		time = 0;
-	char**		newPaths = NULL;
+	int		save = 0;
+	time_t	time = 0;
+	tStat	dirInfos;
 
-	newPaths = malloc(sizeof(char*) * (len + 1));
-	if (!newPaths)
-		{ memoryFailed(); infos->error = true; return ; }
-	newPaths[len] = NULL;
+	if (pathsLen == 1)
+		return (0);
 
-	for (int k = 0, save = 0; k != len; k++, time = 0)
+	for (int i = 0; i != pathsLen; i++)
 	{
-		for (int i = 0; i != len; i++)
+		if (array[i] != NULL)
 		{
-			if ((*array)[i] != NULL)
-			{
-				tStat	dirInfos;
-				stat((*array)[i], &dirInfos);
-				if (dirInfos.st_mtime > time)
-					time = dirInfos.st_mtime, save = i;
-			}
+			stat(array[i], &dirInfos);
+
+			if (dirInfos.st_mtime > time)
+				time = dirInfos.st_mtime, save = i;
 		}
-		newPaths[k] = (*array)[save];
-		(*array)[save] = NULL;
 	}
-	free(*array);
-	*array = newPaths;
+
+	return (save);
 }
 
-void	orderByAlph(tInfos* infos, char*** array)
+int	getElementInAlphOrder(char** array, const int pathsLen)
 {
-	int		len = getArrLen(*array);
-	char**	newArray = NULL;
+	int		save = 0;
+	int		count = 0;
 
-	newArray = malloc(sizeof(char*) * (len + 1));
-	if (!newArray)
-		{ memoryFailed(); infos->error = true; return ; }
-	for (int k = 0; k != len + 1; k++)
-		newArray[k] = NULL;
+	if (pathsLen == 1)
+		return (0);
 
-	for (int i = 0, save = 0; i != len; i++, save = 0)
+	for (int k = 0, value = 255; count != 1; k++, value = 255)
 	{
-		int count = 0;
-		for (int k = 0, value = 127; count != 1; k++, value = 127)
+		count = 0;
+		for (int j = 0; j != pathsLen; j++)
 		{
-			count = 0;
-			for (int j = 0; j != len; j++)
-			{
-				if ((*array)[j] != NULL && (*array)[j][k] < value)
-					value = (*array)[j][k];
-			}
-			for (int j = 0; j != len; j++)
-			{
-				if ((*array)[j] != NULL && (*array)[j][k] == value)
-					count++, save = j;
-			}
+			if (array[j] != NULL && array[j][k] < value)
+				value = array[j][k];
 		}
-		int k = 0;
-		while (newArray[k] != NULL)
-			k++;
-		newArray[k] = (*array)[save];
-		(*array)[save] = NULL;
+		for (int j = 0; j != pathsLen; j++)
+		{
+			if (array[j] != NULL && array[j][k] == value)
+				count++, save = j;
+		}
+
+		if (value == '\0')
+			break ;
 	}
-	free(*array);
-	*array = newArray;
+
+	return (save);
 }
