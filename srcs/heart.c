@@ -102,7 +102,6 @@ void	printFolder(tInfos* infos, char** paths, char* originalPath)
 			element = getElementInTimeOrder(newArray, pathsNumber, pathLen);
 		else
 			element = getElementInAlphOrder(newArray, pathsNumber, pathLen);
-
 		printElement(infos, newArray[element]);
 
 		newArray[element] = NULL;

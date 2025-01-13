@@ -3,11 +3,21 @@
 int	getElementInTimeOrder(char** array, int pathsNumber, int pathsLen)
 {
 	int		save = 0;
+	int		count = 0;
 	time_t	time = 0;
 	tStat	dirInfos;
 
 	if (pathsNumber == 1)
 		return (0);
+
+	for (int i = 0; i != pathsNumber; i++)
+	{
+		if (array[i] != NULL)
+			save = i, count++;
+	}
+
+	if (count == 1)
+		return (save);
 
 	for (int i = 0; i != pathsNumber; i++)
 	{
@@ -30,6 +40,15 @@ int	getElementInAlphOrder(char** array, int pathsNumber, int pathsLen)
 
 	if (pathsNumber == 1)
 		return (0);
+
+	for (int i = 0; i != pathsNumber; i++)
+	{
+		if (array[i] != NULL)
+			save = i, count++;
+	}
+
+	if (count == 1)
+		return (save);
 
 	for (int k = 0, value = 255; count != 1; k++, value = 255)
 	{
