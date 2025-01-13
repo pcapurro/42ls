@@ -15,9 +15,7 @@
 # include <sys/stat.h>
 # include <sys/xattr.h>
 
-typedef struct dirent t_dirent;
-
-typedef struct sInfos
+struct sInfos
 {
 	bool	listing;
 	bool	recursive;
@@ -29,8 +27,12 @@ typedef struct sInfos
 	char**	paths;
 
 	bool	error;
+};
 
-}	tInfos;
+typedef struct sInfos	tInfos;
+
+typedef struct dirent	tDirent;
+typedef struct stat		tStat;
 
 int		getStrLen(const char* str);
 int		getArrLen(char** str);
@@ -44,7 +46,7 @@ void	systemFailed(void);
 void*	addElement(char*** array, const char* element);
 void*	findElement(char** array, char* element);
 
-void	freeArray(char*** array);
+void	freeArray(char** array);
 
 bool	isValidOption(const char *str);
 void	printOptionsError(const int value, const char* str);

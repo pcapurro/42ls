@@ -2,8 +2,6 @@
 
 void	printListError(const char* element)
 {
-	writeStr("\033[A", 2);
-
 	writeStr("ft_ls: unable to access '", 2);
 	writeStr(element, 2);
 	writeStr("': ", 2);
@@ -34,7 +32,7 @@ void	printElement(tInfos* infos, char* path)
 
 char**	getFolderElements(tInfos* infos, DIR* directory, char* originalPath)
 {
-	t_dirent*	dirEntry;
+	tDirent*	dirEntry = NULL;
 	char**		newElements = NULL;
 	char*		element = NULL;
 
@@ -55,6 +53,7 @@ char**	getFolderElements(tInfos* infos, DIR* directory, char* originalPath)
 
 		addElement(&newElements, element);
 		free(element);
+		element = NULL;
 	}
 
 	return (newElements);
@@ -119,10 +118,10 @@ void	list(tInfos* infos, char** paths, int value)
 			continue ;
 		}
 
-		// if (infos->time == true)
-		// 	orderByTime(infos, &newPaths);
-		// else
-		// 	orderByAlph(infos, &newPaths);
+		if (infos->time == true)
+			orderByTime(infos, &newPaths);
+		else
+			orderByAlph(infos, &newPaths);
 
 		for (int k = 0; newPaths[k] != NULL; k++)
 			printElement(infos, newPaths[k]);
@@ -138,7 +137,7 @@ void	list(tInfos* infos, char** paths, int value)
 			}
 		}
 
-		freeArray(&newPaths);
+		freeArray(newPaths);
 		closedir(directory);
 
 		if (value == true)

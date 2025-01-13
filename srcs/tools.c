@@ -74,11 +74,14 @@ void*	findElement(char** array, char* element)
 	return (NULL);
 }
 
-void	freeArray(char*** array)
+void	freeArray(char** array)
 {
-	for (int i = 0; (*array)[i] != NULL; i++)
-		free((*array)[i]);
-	free(*array);
+	if (array != NULL)
+	{
+		for (int i = 0; array[i] != NULL; i++)
+			free(array[i]);
+		free(array);
+	}
 }
 
 void	memoryFailed(void)
