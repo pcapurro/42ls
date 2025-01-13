@@ -83,31 +83,32 @@ char*	getName(char* path)
 	return (name);
 }
 
-void	printFolder(tInfos* infos, char** paths)
+void	printFolder(tInfos* infos, char** paths, char* originalPath)
 {
-	int		len = getArrLen(paths);
+	int		pathsNumber = getArrLen(paths);
+	int		pathLen = getStrLen(originalPath);
 	char**	newArray;
 
-	newArray = malloc(sizeof(char*) * (len + 1));
+	newArray = malloc(sizeof(char*) * (pathsNumber + 1));
 	if (!newArray)
 		return ;
 	for (int i = 0; paths[i] != NULL; i++)
 		newArray[i] = paths[i];
-	newArray[len] = NULL;
+	newArray[pathsNumber] = NULL;
 
-	for (int count = 0, element = 0; count != len; count++)
+	for (int count = 0, element = 0; count != pathsNumber; count++)
 	{
 		if (infos->time == true)
-			element = getElementInTimeOrder(newArray, len);
+			element = getElementInTimeOrder(newArray, pathsNumber, pathLen);
 		else
-			element = getElementInAlphOrder(newArray, len);
+			element = getElementInAlphOrder(newArray, pathsNumber, pathLen);
 
-		if (element != -1)
-			printElement(infos, newArray[element]);
+		printElement(infos, newArray[element]);
 
 		newArray[element] = NULL;
 	}
 
+	free(newArray);
 	writeStr("\n", 1);
 }
 
@@ -146,7 +147,7 @@ void	list(tInfos* infos, char** paths, int value)
 			continue ;
 		}
 
-		printFolder(infos, newPaths);
+		printFolder(infos, newPaths, paths[i]);
 
 		if (infos->recursive == true)
 		{
