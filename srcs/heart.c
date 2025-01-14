@@ -28,9 +28,9 @@ void	printElement(tInfos* infos, char* path)
 		name = name + 1;
 
 	if (infos->listing == true)
-		printListing(path);
-
-	writeStr(name, 1);
+		printListing(path, name);
+	else
+		writeStr(name, 1);
 
 	if (value == true)
 		path[end] = '/';
@@ -94,7 +94,49 @@ char*	getName(char* path)
 	return (name);
 }
 
-void	printFolder(tInfos* infos, char** paths, char* originalPath)
+void	printTotal(char* originalPath, bool hidden)
+{
+	int			total = 0;
+	char*		path = NULL;
+	tStat		dirInfo;
+	tDirent*	dirEntry;
+
+	DIR* directory = opendir(originalPath);
+	if (directory == NULL)
+		return ;
+
+	while (1)
+	{
+		dirEntry = readdir(directory);
+		if (dirEntry == NULL)
+			break ;
+
+		if (dirEntry->d_name[0] == '.' && hidden == false)
+			continue ;
+
+		path = getJoin(originalPath, dirEntry->d_name, "\0");
+		if (!path)
+			{ closedir(directory); return ; }
+
+		lstat(path, &dirInfo);
+		total += dirInfo.st_blocks;
+
+		free(path);
+	}
+
+	closedir(directory);
+
+	char* number = getNumber(total / 2);
+
+	writeStr("total ", 1);
+	if (number == NULL)
+		writeStr("0", 1);
+	else
+		writeStr(number, 1), free(number);
+	writeStr("\n", 1);
+}
+
+void	printFolder(tInfos* infos, DIR* directory, char** paths, char* originalPath)
 {
 	int		pathsNumber = getArrLen(paths);
 	int		pathLen = getStrLen(originalPath);
@@ -106,6 +148,9 @@ void	printFolder(tInfos* infos, char** paths, char* originalPath)
 	for (int i = 0; paths[i] != NULL; i++)
 		newArray[i] = paths[i];
 	newArray[pathsNumber] = NULL;
+
+	if (infos->listing == true)
+		printTotal(originalPath, infos->hidden);
 
 	for (int count = 0, element = 0; count != pathsNumber; count++)
 	{
@@ -209,7 +254,7 @@ void	list(tInfos* infos, char** paths, int value)
 
 		if (infos->time == true)
 			reOrderFolder(infos, &newPaths, paths[i]);
-		printFolder(infos, newPaths, paths[i]);
+		printFolder(infos, directory, newPaths, paths[i]);
 
 		if (infos->listing == false)
 			writeStr("\n", 1);

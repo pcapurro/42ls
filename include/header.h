@@ -61,7 +61,7 @@ char*	getSize(char* path);
 char*	getDate(char* path);
 char*	getRight(int value, mode_t info);
 char*	getData(char* path);
-void	printListing(char* path);
+void	printListing(char* path, char* name);
 
 void	printListError(const char* element);
 char*	getName(char* path);

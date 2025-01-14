@@ -112,23 +112,64 @@ char*	getData(char* path)
 	return (data);
 }
 
-void	printListing(char* path)
+char*	getLink(char* path)
 {
-	char*	data = NULL;
-	char*	date = NULL;
-	char*	size = NULL;
+	char*	str = NULL;
+	tStat	info;
 
-	data = getData(path);
-	writeStr(data, 1);
-	writeStr(" ", 1);
-	free(data);
+	lstat(path, &info);
 
-	date = getDate(path);
-	writeStr(date, 1);
-	writeStr(" ", 1);
+	str = malloc(sizeof(char) * 5000);
+	if (!str)
+		return (NULL);
 
-	size = getSize(path);
-	writeStr(size, 1);
-	writeStr(" ", 1);
-	free(size);
+	for (int i = 0; i != 5000; i++)
+		str[i] = '\0';
+
+	str[0] = '-', str[1] = '>', str[2] = ' ';
+
+	readlink(path, str + 3, 4096);
+
+	return (str);
+}
+
+void	printListing(char* path, char* name)
+{
+	char*	str = NULL;
+	tStat	info;
+
+	lstat(path, &info);
+
+	str = getData(path);
+	if (str != NULL)
+		{ writeStr(str, 1), writeStr(" ", 1), free(str); }
+
+	str = getDate(path);
+	if (str != NULL)
+		{ writeStr(str, 1), writeStr(" ", 1); }
+
+	str = getSize(path);
+	if (str != NULL)
+		{ writeStr(str, 1), writeStr(" ", 1), free(str); }
+
+	// if (S_ISDIR(info.st_mode) == true)
+	// 	writeStr("\033[34m", 1);
+
+	// if (S_ISLNK(info.st_mode) == true)
+	// 	writeStr("\033[32m", 1);
+
+	writeStr(name, 1);
+
+	// writeStr("\033[0m", 1);
+
+	if (S_ISLNK(info.st_mode) == true)
+	{
+		str = getLink(path);
+		if (str != NULL)
+		{
+			writeStr(" ", 1);
+			writeStr(str, 1);
+			writeStr(" ", 1);
+			free(str); }
+	}
 }
