@@ -23,7 +23,7 @@ int	getElementInTimeOrder(char** array, int pathsNumber, int pathsLen)
 	{
 		if (array[i] != NULL)
 		{
-			stat(array[i] + pathsLen, &dirInfos);
+			stat(array[i], &dirInfos);
 
 			if (dirInfos.st_mtime > time)
 				time = dirInfos.st_mtime, save = i;
