@@ -91,64 +91,30 @@ char*	getName(char* path)
 	return (name);
 }
 
-// void	printFolder(tInfos* infos, char** paths, char* originalPath)
-// {
-// 	int		pathsNumber = getArrLen(paths);
-// 	int		pathLen = getStrLen(originalPath);
-// 	char**	newArray;
-
-// 	newArray = malloc(sizeof(char*) * (pathsNumber + 1));
-// 	if (!newArray)
-// 		return ;
-// 	for (int i = 0; paths[i] != NULL; i++)
-// 		newArray[i] = paths[i];
-// 	newArray[pathsNumber] = NULL;
-
-// 	for (int count = 0, element = 0; count != pathsNumber; count++)
-// 	{
-// 		if (infos->time == true)
-// 			element = getElementInTimeOrder(newArray, pathsNumber, pathLen);
-// 		else
-// 			element = getElementInAlphOrder(newArray, pathsNumber, pathLen);
-// 		printElement(infos, newArray[element]);
-
-// 		newArray[element] = NULL;
-// 	}
-
-// 	free(newArray);
-// 	writeStr("\n", 1);
-// }
-
 void	printFolder(tInfos* infos, char** paths, char* originalPath)
 {
-	if (infos->time == true)
+	int		pathsNumber = getArrLen(paths);
+	int		pathLen = getStrLen(originalPath);
+	char**	newArray;
+
+	newArray = malloc(sizeof(char*) * (pathsNumber + 1));
+	if (!newArray)
+		return ;
+	for (int i = 0; paths[i] != NULL; i++)
+		newArray[i] = paths[i];
+	newArray[pathsNumber] = NULL;
+
+	for (int count = 0, element = 0; count != pathsNumber; count++)
 	{
-		int		pathsNumber = getArrLen(paths);
-		int		pathLen = getStrLen(originalPath);
-		char**	newArray = NULL;
-
-		newArray = malloc(sizeof(char*) * (pathsNumber + 1));
-		if (!newArray)
-			return ;
-		for (int i = 0; paths[i] != NULL; i++)
-			newArray[i] = paths[i];
-		newArray[pathsNumber] = NULL;
-
-		for (int count = 0, element = 0; count != pathsNumber; count++)
-		{
+		if (infos->time == true)
 			element = getElementInTimeOrder(newArray, pathsNumber, pathLen);
-			printElement(infos, newArray[element]);
+		else
+			element = getElementInAlphOrder(newArray, pathsNumber, pathLen);
+		printElement(infos, newArray[element]);
 
-			newArray[element] = NULL;
-		}
-
-		free(newArray);
+		newArray[element] = NULL;
 	}
-	else
-	{
-		for (int i = 0; paths[i] != NULL; i++)
-			printElement(infos, paths[i]);
-	}
+	free(newArray);
 }
 
 void	reOrderFolder(tInfos* infos, char*** paths, char* originalPath)
@@ -176,8 +142,8 @@ void	reOrderFolder(tInfos* infos, char*** paths, char* originalPath)
 void	preList(tInfos* infos)
 {
 	int			count = 0;
+	int			save = -1;
 	DIR*		directory;
-	tDirent*	dirEntry = NULL;
 
 	for (int i = 0; infos->paths[i] != NULL; i++)
 	{
@@ -185,18 +151,22 @@ void	preList(tInfos* infos)
 		if (directory == NULL)
 		{
 			printElement(infos, infos->paths[i]);
+
 			count++;
+			if (save == -1)
+				save = i;
+
 			continue ;
 		}
 		else
 			closedir(directory);
 	}
 
-	if (count != 0)
-	{
-		if (infos->listing == false)
-			writeStr("\n", 1);
-	}
+	if (save > 0)
+		writeStr("\n", 1);
+
+	if (count != 0 && infos->listing == false)
+		writeStr("\n", 1);
 }
 
 void	list(tInfos* infos, char** paths, int value)
@@ -234,7 +204,8 @@ void	list(tInfos* infos, char** paths, int value)
 			continue ;
 		}
 
-		reOrderFolder(infos, &newPaths, paths[i]);
+		if (infos->time == true)
+			reOrderFolder(infos, &newPaths, paths[i]);
 		printFolder(infos, newPaths, paths[i]);
 
 		if (infos->listing == false)
