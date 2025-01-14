@@ -44,6 +44,7 @@ int	getElementInAlphOrder(char** array, int pathsNumber, int pathsLen, bool reve
 {
 	int		save = 0;
 	int		count = 0;
+	char	saved = '\0';
 
 	if (pathsNumber == 1)
 		return (0);
@@ -57,24 +58,38 @@ int	getElementInAlphOrder(char** array, int pathsNumber, int pathsLen, bool reve
 	if (count == 1)
 		return (save);
 
+	for (int j = 0; j != pathsNumber; j++)
+	{
+		if (array[j] != NULL)
+			saved = array[j][0];
+	}
+
 	for (int k = 0, value = 255; count != 1; k++, value = 255)
 	{
 		count = 0;
 		for (int j = 0; j != pathsNumber; j++)
 		{
-			if (array[j] != NULL && array[j][pathsLen + k] < value)
-			{
+			if (array[j] != NULL && array[j][0] != '\0' && array[j][pathsLen + k] < value)
 				value = array[j][pathsLen + k];
-				save = j;
-				count = 0;
-			}
+		}
 
-			if (array[j] != NULL && array[j][pathsLen + k] == value)
-				count++;
+		for (int j = 0; j != pathsNumber; j++)
+		{
+			if (array[j] != NULL && array[j][0] != '\0' && array[j][pathsLen + k] == value)
+				count++, save = j;
+
+			if (array[j] != NULL && array[j][0] != '\0' && array[j][pathsLen + k] != value)
+				array[j][0] = '\0';
 		}
 
 		if (value == '\0')
 			break ;
+	}
+
+	for (int j = 0; j != pathsNumber; j++)
+	{
+		if (array[j] != NULL && array[j][0] == '\0')
+			array[j][0] = saved;
 	}
 
 	return (save);
