@@ -56,12 +56,14 @@ int	getElementInAlphOrder(char** array, int pathsNumber, int pathsLen)
 		for (int j = 0; j != pathsNumber; j++)
 		{
 			if (array[j] != NULL && array[j][pathsLen + k] < value)
+			{
 				value = array[j][pathsLen + k];
-		}
-		for (int j = 0; j != pathsNumber; j++)
-		{
+				save = j;
+				count = 0;
+			}
+
 			if (array[j] != NULL && array[j][pathsLen + k] == value)
-				count++, save = j;
+				count++;
 		}
 
 		if (value == '\0')
