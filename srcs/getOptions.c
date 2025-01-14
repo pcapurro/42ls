@@ -46,7 +46,7 @@ void	getOption(char* argv, tInfos* infos)
 		if (option == 'l' && infos->listing == false)
 			infos->listing = true;
 		if (option == 'R' && infos->recursive == false)
-			infos->recursive = true, infos->list = true;
+			infos->recursive = true, infos->title = true;
 		if (option == 'a' && infos->hidden == false)
 			infos->hidden = true;
 		if (option == 'r' && infos->reverse == false)

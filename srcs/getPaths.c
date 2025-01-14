@@ -9,8 +9,10 @@ void	searchForPaths(char** argv, tInfos* infos)
 			continue ;
 		
 		tStat	pathInfos;
+		DIR*	directory = NULL;
 
-		if (opendir(argv[i]) == NULL && stat(argv[i], &pathInfos) != 0)
+		directory = opendir(argv[i]);
+		if (directory == NULL && stat(argv[i], &pathInfos) != 0)
 			printListError(argv[i]);
 		else
 		{
@@ -18,6 +20,8 @@ void	searchForPaths(char** argv, tInfos* infos)
 			if (!infos->paths[j])
 				{ infos->error = true; return ; }
 			j++;
+
+			closedir(directory);
 		}
 	}
 }
@@ -34,7 +38,7 @@ void	getPaths(char** argv, tInfos* infos)
 	}
 
 	if (len > 1)
-		infos->list = true;
+		infos->title = true;
 
 	if (len == 0)
 		infos->paths = malloc(sizeof(const char *) * 2);

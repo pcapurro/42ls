@@ -2,16 +2,18 @@
 
 void	setToDefault(tInfos* infos)
 {
-	infos->error = false;
-
-	infos->paths = NULL;
-	infos->options = false;
-
 	infos->listing = false;
 	infos->recursive = false;
 	infos->hidden = false;
 	infos->reverse = false;
 	infos->time = false;
+
+	infos->title = false;
+
+	infos->paths = NULL;
+	infos->options = false;
+
+	infos->error = false;
 }
 
 void	printHelp(void)

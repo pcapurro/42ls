@@ -195,7 +195,7 @@ void	list(tInfos* infos, char** paths, int value)
 		if (value == true || i != 0)
 			writeStr("\n", 1);
 
-		if (getArrLen(paths) > 1 || infos->recursive == true || infos->list == true)
+		if (getArrLen(paths) > 1 || infos->recursive == true || infos->title == true)
 			writeStr(paths[i], 1), writeStr(":\n", 1);
 
 		newPaths = getFolderElements(infos, directory, paths[i]);
