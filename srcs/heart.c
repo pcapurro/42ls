@@ -11,18 +11,26 @@ void	printListError(const char* element)
 
 void	printElement(tInfos* infos, char* path)
 {
-	int i = getStrLen(path) - 1;
+	int		end = getStrLen(path) - 1;
+	int		i = end;
+	bool	value = false;
 
 	if (path[i] == '/' && i != 0)
 		i--;
 	while (i != 0 && path[i] != '/')
 		i--;
 
+	if (path[end] == '/')
+		path[end] = '\0', value = true;
+
 	char* name = path + i;
 	if (i != 0)
 		name = name + 1;
 
 	writeStr(name, 1);
+
+	if (value == true)
+		path[end] = '/';
 
 	if (infos->listing == false)
 		writeStr("  ", 1);
@@ -165,6 +173,33 @@ void	reOrderFolder(tInfos* infos, char*** paths, char* originalPath)
 
 	free(*paths);
 	*paths = newPaths;
+}
+
+void	preList(tInfos* infos)
+{
+	int			count = 0;
+	DIR*		directory;
+	tDirent*	dirEntry = NULL;
+
+	for (int i = 0; infos->paths[i] != NULL; i++)
+	{
+		directory = opendir(infos->paths[i]);
+		if (directory == NULL)
+		{
+			printElement(infos, infos->paths[i]);
+			count++;
+			continue ;
+		}
+		else
+			closedir(directory);
+	}
+
+	if (count != 0)
+	{
+		writeStr("\n", 1);
+		if (infos->listing == false)
+			writeStr("\n", 1);
+	}
 }
 
 void	list(tInfos* infos, char** paths, int value)

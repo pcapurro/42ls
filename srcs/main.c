@@ -48,6 +48,7 @@ int	main(const int argc, char** argv)
 
 		getPaths(argv + 1, &infos);
 
+		preList(&infos);
 		list(&infos, infos.paths, false);
 
 		for (int i = 0; infos.paths[i] != NULL; i++)

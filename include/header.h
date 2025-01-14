@@ -53,6 +53,9 @@ void	printOptionsError(const int value, const char* str);
 void	getOption(char* argv, tInfos* infos);
 void	getOptions(char** argv, tInfos* infos);
 
+void	printListError(const char* element);
+char*	getName(char* path);
+
 void	searchForPaths(char** argv, tInfos* infos);
 void	getPaths(char** argv, tInfos* infos);
 
@@ -63,6 +66,7 @@ int		getElementInTimeOrder(char** array, int pathsNumber, int pathsLen);
 int		getElementInAlphOrder(char** array, int pathsNumber, int pathsLen);
 
 void	list(tInfos* infos, char** paths, int value);
+void	preList(tInfos* infos);
 
 void	setToDefault(tInfos* infos);
 void	printHelp(void);

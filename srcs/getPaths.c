@@ -7,11 +7,18 @@ void	searchForPaths(char** argv, tInfos* infos)
 		if (argv[i][0] == '\0' || \
 			(argv[i][0] == '-' && argv[i][1] != '\0'))
 			continue ;
+		
+		tStat	pathInfos;
 
-		infos->paths[j] = getDup(argv[i]);
-		if (!infos->paths[j])
-			{ infos->error = true; return ; }
-		j++;
+		if (opendir(argv[i]) == NULL && stat(argv[i], &pathInfos) != 0)
+			printListError(argv[i]);
+		else
+		{
+			infos->paths[j] = getDup(argv[i]);
+			if (!infos->paths[j])
+				{ infos->error = true; return ; }
+			j++;
+		}
 	}
 }
 
