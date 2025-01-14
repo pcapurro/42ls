@@ -144,13 +144,13 @@ void	printListing(char* path, char* name)
 	if (str != NULL)
 		{ writeStr(str, 1), writeStr(" ", 1), free(str); }
 
-	str = getDate(path);
-	if (str != NULL)
-		{ writeStr(str, 1), writeStr(" ", 1); }
-
 	str = getSize(path);
 	if (str != NULL)
 		{ writeStr(str, 1), writeStr(" ", 1), free(str); }
+
+	str = getDate(path);
+	if (str != NULL)
+		{ writeStr(str, 1), writeStr(" ", 1); }
 
 	// if (S_ISDIR(info.st_mode) == true)
 	// 	writeStr("\033[34m", 1);
