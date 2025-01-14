@@ -28,7 +28,7 @@ int	getElementInTimeOrder(char** array, int pathsNumber, bool reverse)
 	{
 		if (array[i] != NULL)
 		{
-			stat(array[i], &dirInfos);
+			lstat(array[i], &dirInfos);
 
 			if (reverse == true && dirInfos.st_mtime < time)
 				time = dirInfos.st_mtime, save = i;
