@@ -1,10 +1,10 @@
 #include "../include/header.h"
 
-int	getElementInTimeOrder(char** array, int pathsNumber, int pathsLen)
+int	getElementInTimeOrder(char** array, int pathsNumber, bool reverse)
 {
 	int		save = 0;
 	int		count = 0;
-	time_t	time = 0;
+	time_t	time;
 	tStat	dirInfos;
 
 	if (pathsNumber == 1)
@@ -19,13 +19,20 @@ int	getElementInTimeOrder(char** array, int pathsNumber, int pathsLen)
 	if (count == 1)
 		return (save);
 
+	if (reverse == true)
+		time = 2147483647;
+	else
+		time = 0;
+
 	for (int i = 0; i != pathsNumber; i++)
 	{
 		if (array[i] != NULL)
 		{
 			stat(array[i], &dirInfos);
 
-			if (dirInfos.st_mtime > time)
+			if (reverse == true && dirInfos.st_mtime < time)
+				time = dirInfos.st_mtime, save = i;
+			if (reverse == false && dirInfos.st_mtime > time)
 				time = dirInfos.st_mtime, save = i;
 		}
 	}
@@ -33,7 +40,7 @@ int	getElementInTimeOrder(char** array, int pathsNumber, int pathsLen)
 	return (save);
 }
 
-int	getElementInAlphOrder(char** array, int pathsNumber, int pathsLen)
+int	getElementInAlphOrder(char** array, int pathsNumber, int pathsLen, bool reverse)
 {
 	int		save = 0;
 	int		count = 0;

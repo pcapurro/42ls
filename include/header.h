@@ -64,8 +64,8 @@ void	getPaths(char** argv, tInfos* infos);
 bool	isFolder(const char* name, const unsigned type, tInfos* infos);
 bool	isSame(char* str1, const char* str2);
 
-int		getElementInTimeOrder(char** array, int pathsNumber, int pathsLen);
-int		getElementInAlphOrder(char** array, int pathsNumber, int pathsLen);
+int		getElementInTimeOrder(char** array, int pathsNumber, bool reverse);
+int		getElementInAlphOrder(char** array, int pathsNumber, int pathsLen, bool reverse);
 
 void	list(tInfos* infos, char** paths, int value);
 void	preList(tInfos* infos);
