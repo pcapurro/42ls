@@ -40,6 +40,8 @@ int		getStrLen(const char* str);
 int		getArrLen(char** str);
 char*	getDup(const char* str);
 char*	getJoin(const char* s1, const char* s2, const char* s3);
+char*	getNumber(const int number);
+
 void	writeStr(const char* str, int fd);
 
 void	memoryFailed(void);
@@ -54,6 +56,12 @@ bool	isValidOption(const char *str);
 void	printOptionsError(const int value, const char* str);
 void	getOption(char* argv, tInfos* infos);
 void	getOptions(char** argv, tInfos* infos);
+
+char*	getSize(char* path);
+char*	getDate(char* path);
+char*	getRight(int value, mode_t info);
+char*	getData(char* path);
+void	printListing(char* path);
 
 void	printListError(const char* element);
 char*	getName(char* path);

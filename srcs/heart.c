@@ -27,6 +27,9 @@ void	printElement(tInfos* infos, char* path)
 	if (i != 0)
 		name = name + 1;
 
+	if (infos->listing == true)
+		printListing(path);
+
 	writeStr(name, 1);
 
 	if (value == true)

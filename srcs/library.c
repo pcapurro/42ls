@@ -61,6 +61,37 @@ char*	getDup(const char* str)
 	return (string);
 }
 
+char*	getNumber(const int number)
+{
+	char*	str;
+	int		len = 0;
+	int		i = 9;
+	int		nb = number;
+
+	while (nb > 9)
+		len++, nb = nb / 10;
+	len++;
+
+	str = malloc(sizeof(char) * len + 1);
+	if (!str)
+		return (NULL);
+		
+	for (int k = 0; k != len + 1; k++)
+		str[k] = '\0';
+
+	i = len - 1;
+	nb = number;
+	while (nb > 9)
+	{
+		str[i] = (nb % 10) + 48;
+		nb = nb / 10;
+		i--;
+	}
+	str[i] = nb + 48;
+
+	return (str);
+}
+
 void	writeStr(const char* str, int fd)
 {
 	for (int i = 0; str[i] != '\0'; i++)
