@@ -8,21 +8,29 @@ void	searchForPaths(char** argv, tInfos* infos)
 			(argv[i][0] == '-' && argv[i][1] != '\0'))
 			continue ;
 		
+		int		value = 0;
 		tStat	pathInfos;
 		DIR*	directory = NULL;
 
 		directory = opendir(argv[i]);
-		if (directory == NULL && stat(argv[i], &pathInfos) != 0)
+		value = lstat(argv[i], &pathInfos);
+
+		if (directory == NULL && value != 0)
 			printListError(argv[i]);
 		else
 		{
-			infos->paths[j] = getDup(argv[i]);
+			if (S_ISDIR(pathInfos.st_mode) == true && argv[i][getStrLen(argv[i]) - 1] != '/')
+				infos->paths[j] = getJoin(argv[i], "/", "\0");
+			else
+				infos->paths[j] = getDup(argv[i]);
+
 			if (!infos->paths[j])
 				{ infos->error = true; return ; }
 			j++;
-
-			closedir(directory);
 		}
+
+		if (directory != NULL)
+			closedir(directory);
 	}
 }
 
@@ -43,7 +51,11 @@ void	getPaths(char** argv, tInfos* infos)
 	if (len == 0)
 		infos->paths = malloc(sizeof(const char *) * 2);
 	else
+	{
 		infos->paths = malloc(sizeof(const char *) * (len + 1));
+		for (int i = 0; i != len + 1; i++)
+			infos->paths[i] = NULL;
+	}
 
 	if (!infos->paths)
 	{

@@ -189,9 +189,9 @@ void	reOrderFolder(tInfos* infos, char*** paths, char* originalPath)
 
 void	preList(tInfos* infos)
 {
-	int			count = 0;
-	int			save = -1;
-	DIR*		directory;
+	int		count = 0;
+	int		save = -1;
+	DIR*	directory;
 
 	for (int i = 0; infos->paths[i] != NULL; i++)
 	{
