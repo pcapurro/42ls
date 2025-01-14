@@ -149,8 +149,6 @@ void	printFolder(tInfos* infos, char** paths, char* originalPath)
 		for (int i = 0; paths[i] != NULL; i++)
 			printElement(infos, paths[i]);
 	}
-
-	writeStr("\n", 1);
 }
 
 void	reOrderFolder(tInfos* infos, char*** paths, char* originalPath)
@@ -196,7 +194,6 @@ void	preList(tInfos* infos)
 
 	if (count != 0)
 	{
-		writeStr("\n", 1);
 		if (infos->listing == false)
 			writeStr("\n", 1);
 	}
@@ -206,9 +203,6 @@ void	list(tInfos* infos, char** paths, int value)
 {
 	DIR*		directory;
 	char**		newPaths = NULL;
-
-	if (infos->recursive == true && value == true)
-		writeStr("\n", 1);
 
 	for (int i = 0; paths[i] != NULL; i++)
 	{
@@ -225,7 +219,10 @@ void	list(tInfos* infos, char** paths, int value)
 			continue ;
 		}
 
-		if (getArrLen(paths) > 1 || infos->recursive == true)
+		if (value == true || i != 0)
+			writeStr("\n", 1);
+
+		if (getArrLen(paths) > 1 || infos->recursive == true || infos->list == true)
 			writeStr(paths[i], 1), writeStr(":\n", 1);
 
 		newPaths = getFolderElements(infos, directory, paths[i]);
@@ -239,6 +236,9 @@ void	list(tInfos* infos, char** paths, int value)
 
 		reOrderFolder(infos, &newPaths, paths[i]);
 		printFolder(infos, newPaths, paths[i]);
+
+		if (infos->listing == false)
+			writeStr("\n", 1);
 
 		if (infos->recursive == true)
 		{

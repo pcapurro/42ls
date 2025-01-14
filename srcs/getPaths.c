@@ -33,6 +33,9 @@ void	getPaths(char** argv, tInfos* infos)
 			len++;
 	}
 
+	if (len > 1)
+		infos->list = true;
+
 	if (len == 0)
 		infos->paths = malloc(sizeof(const char *) * 2);
 	else

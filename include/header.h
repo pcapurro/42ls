@@ -23,6 +23,8 @@ struct sInfos
 	bool	reverse;
 	bool	time;
 
+	bool	list;
+
 	bool	options;
 	char**	paths;
 
