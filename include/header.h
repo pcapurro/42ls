@@ -73,7 +73,7 @@ int		getElementInAlphOrder(char** array, int pathsNumber, int pathsLen, bool rev
 void	printPathError(const char* element);
 void	printOptionsError(const int value, const char* str);
 
-void	printElement(tInfos* infos, char* path);
+void	printElement(tInfos* infos, char* path, const bool preList);
 void	printTotal(tInfos* infos, char* originalPath, bool hidden);
 void	printFolder(tInfos* infos, char** paths, char* originalPath);
 void*	printListing(char* path, char* name);

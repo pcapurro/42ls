@@ -8,10 +8,13 @@ void	preList(tInfos* infos)
 
 	for (int i = 0; infos->paths[i] != NULL; i++)
 	{
+		if (infos->paths[i][getStrLen(infos->paths[i]) - 1] == '/')
+			continue ;
+
 		directory = opendir(infos->paths[i]);
 		if (directory == NULL)
 		{
-			printElement(infos, infos->paths[i]);
+			printElement(infos, infos->paths[i], true);
 			if (infos->error == 1)
 				return ;
 

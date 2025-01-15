@@ -26,7 +26,7 @@ void	printOptionsError(const int value, const char* str)
 	writeStr("Type 'ft_ls --help' for more informations.\n", 2);
 }
 
-void	printElement(tInfos* infos, char* path)
+void	printElement(tInfos* infos, char* path, const bool preList)
 {
 	int		end = getStrLen(path) - 1;
 	int		i = end;
@@ -48,7 +48,7 @@ void	printElement(tInfos* infos, char* path)
 	if (name[0] == '/')
 		name = name + 1;
 
-	if (infos->listing == true)
+	if (infos->listing == true && preList == false)
 	{
 		if (printListing(path, name) == NULL)
 			{ infos->error = 1; return ; }
@@ -137,7 +137,7 @@ void	printFolder(tInfos* infos, char** paths, char* originalPath)
 			element = getElementInTimeOrder(newArray, pathsNumber, infos->reverse);
 		else
 			element = getElementInAlphOrder(newArray, pathsNumber, pathLen, infos->reverse);
-		printElement(infos, paths[element]);
+		printElement(infos, paths[element], false);
 
 		if (infos->error == 1)
 		{

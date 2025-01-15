@@ -75,6 +75,9 @@ char*	getNumber(const int number)
 	str = malloc(sizeof(char) * len + 1);
 	if (!str)
 		return (NULL);
+
+	if (number <= 0)
+		{ str[0] = '0', str[1] = '\0'; return (str); }
 		
 	for (int k = 0; k != len + 1; k++)
 		str[k] = '\0';
