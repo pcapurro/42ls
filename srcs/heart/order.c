@@ -1,4 +1,4 @@
-#include "../include/header.h"
+#include "../../include/header.h"
 
 int	getElementInTimeOrder(char** array, int pathsNumber, bool reverse)
 {
@@ -64,7 +64,7 @@ int	getElementInAlphOrder(char** array, int pathsNumber, int pathsLen, bool reve
 			saved = array[j][0];
 	}
 
-	for (int value, k = 0; count != 1; k++, value = 255)
+	for (int value = 255, k = 0; count != 1; k++, value = 255)
 	{
 		if (reverse == true)
 			value = 0;
@@ -72,19 +72,23 @@ int	getElementInAlphOrder(char** array, int pathsNumber, int pathsLen, bool reve
 		count = 0;
 		for (int j = 0; j != pathsNumber; j++)
 		{
-			if (reverse == false && array[j] != NULL && array[j][0] != '\0' && array[j][pathsLen + k] < value)
+			if (reverse == false && array[j] != NULL \
+				&& array[j][0] != '\0' && array[j][pathsLen + k] < value)
 				value = array[j][pathsLen + k];
 
-			if (reverse == true && array[j] != NULL && array[j][0] != '\0' && array[j][pathsLen + k] > value)
+			if (reverse == true && array[j] != NULL \
+				&& array[j][0] != '\0' && array[j][pathsLen + k] > value)
 				value = array[j][pathsLen + k];
 		}
 
 		for (int j = 0; j != pathsNumber; j++)
 		{
-			if (array[j] != NULL && array[j][0] != '\0' && array[j][pathsLen + k] == value)
+			if (array[j] != NULL && array[j][0] != '\0' \
+				&& array[j][pathsLen + k] == value)
 				count++, save = j;
 
-			if (array[j] != NULL && array[j][0] != '\0' && array[j][pathsLen + k] != value)
+			if (array[j] != NULL && array[j][0] != '\0' \
+				&& array[j][pathsLen + k] != value)
 				array[j][0] = '\0';
 		}
 

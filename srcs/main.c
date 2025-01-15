@@ -13,25 +13,16 @@ void	setToDefault(tInfos* infos)
 	infos->paths = NULL;
 	infos->options = false;
 
-	infos->error = false;
+	infos->error = 0;
 }
 
-void	printHelp(void)
+void	setToNull(tInfos* infos)
 {
-	writeStr("Usage: ./ft_ls [paths] [options]\n", 1);
-	writeStr("Supported options: -l, -R, -a, -r and -t.\n", 1);
-}
+	for (int i = 0; infos->paths[i] != NULL; i++)
+		free(infos->paths[i]);
 
-bool	isHelp(const char* str)
-{
-	if (getStrLen(str) != 6)
-		return (false);
-
-	if (str[0] == '-' && str[1] == '-' && str[2] == 'h' \
-		&& str[3] == 'e' && str[4] == 'l' && str[5] == 'p')
-		return (true);
-	
-	return (false);
+	free(infos->paths);
+	infos->paths = NULL;
 }
 
 int	main(const int argc, char** argv)
@@ -45,43 +36,19 @@ int	main(const int argc, char** argv)
 		setToDefault(&infos);
 
 		getOptions(argv + 1, &infos);
-		if (infos.error == true)
-			return (1);
+		if (infos.error != 0)
+			return (infos.error);
 
 		getPaths(argv + 1, &infos);
 
 		preList(&infos);
 		list(&infos, infos.paths, false);
 
-		for (int i = 0; infos.paths[i] != NULL; i++)
-			free(infos.paths[i]);
-		free(infos.paths);
+		setToNull(&infos);
 
-		if (infos.error == true)
-			return (1);
+		if (infos.error != 0)
+			return (infos.error);
 	}
 
 	return (0);
 }
-
-		// printf("paths: \n");
-		// for (int i = 0; infos.paths[i] != NULL; i++)
-		// 	printf("- '%s'\n", infos.paths[i]);
-		// printf("\n");
-
-		// printf("options: \n");
-		// if (infos.options == false)
-		// 	printf("none\n");
-		// else
-		// {
-		// 	if (infos.listing == true)
-		// 		printf("-l\n");
-		// 	if (infos.recursive == true)
-		// 		printf("-R\n");
-		// 	if (infos.hidden == true)
-		// 		printf("-a\n");
-		// 	if (infos.reverse == true)
-		// 		printf("-r\n");
-		// 	if (infos.time == true)
-		// 		printf("-t\n");
-		// }

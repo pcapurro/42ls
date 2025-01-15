@@ -1,6 +1,6 @@
-#include "../include/header.h"
+#include "../../include/header.h"
 
-bool	isValidOption(const char *str)
+bool	isValidOption(const char* str)
 {
 	if (getStrLen(str) == 0)
 		return (false);
@@ -13,23 +13,6 @@ bool	isValidOption(const char *str)
 	}
 
 	return (true);
-}
-
-void	printOptionsError(const int value, const char* str)
-{
-	if (value == 0)
-	{
-		writeStr("ft_ls: option '", 2);
-		writeStr(str, 2);
-		writeStr("' was not recognized.\n", 2);
-	}
-	if (value == 1)
-	{
-		writeStr("ft_ls: invalid option -- '", 2);
-		writeStr(str, 2);
-		writeStr("'\n", 2);
-	}
-	writeStr("Type 'ft_ls --help' for more informations.\n", 2);
 }
 
 void	getOption(char* argv, tInfos* infos)
@@ -66,7 +49,7 @@ void	getOptions(char** argv, tInfos* infos)
 		
 		if (isValidOption(argv[i] + 1) == false)
 		{
-			infos->error = true;
+			infos->error = 2;
 			if (getStrLen(argv[i]) > 2 && argv[i][0] == '-' && argv[i][1] == '-')
 				printOptionsError(0, argv[i]);
 			else

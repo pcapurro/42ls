@@ -7,17 +7,22 @@
 NAME = ft_ls
 
 SRCS = srcs/main.c \
-	srcs/heart.c \
-	srcs/order.c \
-	srcs/listing.c \
-	srcs/getOptions.c \
-	srcs/getPaths.c \
-	srcs/tools.c \
-	srcs/library.c \
+	srcs/help.c \
+	srcs/heart/heart.c \
+	srcs/heart/folder.c \
+	srcs/heart/print.c \
+	srcs/heart/order.c \
+	srcs/heart/listing.c \
+	srcs/heart/options.c \
+	srcs/heart/paths.c \
+	srcs/tools/tools.c \
+	srcs/tools/print.c \
+	srcs/tools/checkers.c \
+	srcs/tools/library.c \
 
 CC = gcc
 
-CFLAGS = -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror
 
 ## == .C TO .O == ##
 
