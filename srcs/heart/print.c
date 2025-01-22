@@ -112,14 +112,18 @@ void	printTotal(tInfos* infos, char* originalPath, bool hidden)
 	writeStr("\n", 1);
 }
 
-void	printFolder(tInfos* infos, char** paths, char* originalPath)
+void	printFolder(tInfos* infos, char** paths, char** originalPaths)
 {
 	int		pathsNumber = getArrLen(paths);
-	int		pathLen = getStrLen(originalPath);
+	int		pathLen = getStrLen(originalPaths[0]);
+	char*	originalPath = originalPaths[0];
+	char**	newArray = copyArray(paths, 1);
 
-	char** newArray = copyArray(paths, 1);
 	if (!newArray)
 		{ infos->error = 1; return ; }
+
+	if (getArrLen(originalPaths) > 1 || infos->recursive == true || infos->title == true)
+		writeStr(originalPaths[0], 1), writeStr(":\n", 1);
 
 	for (int i = 0, end = 0; newArray[i] != NULL; i++)
 	{
@@ -154,6 +158,9 @@ void	printFolder(tInfos* infos, char** paths, char* originalPath)
 		newArray[element] = NULL;
 	}
 	free(newArray);
+
+	if (infos->listing == false)
+		writeStr("\n", 1);
 }
 
 void	*printListing(char* path, char* name)

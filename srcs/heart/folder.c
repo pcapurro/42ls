@@ -1,5 +1,14 @@
 #include "../../include/header.h"
 
+void	freeFolderElements(char** newElements, char* element)
+{
+	for (int i = 0; newElements[i] != NULL; i++)
+		free(newElements[i]);
+	free(newElements), newElements = NULL;
+	if (element != NULL)
+		free(element);
+}
+
 char**	getFolderElements(tInfos* infos, DIR* directory, char* originalPath)
 {
 	tDirent*	dirEntry = NULL;
@@ -12,8 +21,7 @@ char**	getFolderElements(tInfos* infos, DIR* directory, char* originalPath)
 		if (dirEntry == NULL)
 			break ;
 
-		if (infos->hidden == false \
-			&& dirEntry->d_name[0] == '.')
+		if (infos->hidden == false && dirEntry->d_name[0] == '.')
 			continue ;
 
 		if (dirEntry->d_type == DT_DIR)
@@ -21,25 +29,20 @@ char**	getFolderElements(tInfos* infos, DIR* directory, char* originalPath)
 		else
 			element = getJoin(originalPath, dirEntry->d_name, "\0");
 
-		if (!element)
-			element = NULL;
-
-		if (!element || addElement(&newElements, element) == NULL)
+		if (element == NULL || addElement(&newElements, element) == NULL)
 		{
 			memoryFailed();
 			infos->error = 1;
-
-			for (int i = 0; newElements[i] != NULL; i++)
-				free(newElements[i]);
-			free(newElements);
-			if (element != NULL)
-				free(element);
-
-			return (NULL);
+			freeFolderElements(newElements, element);
+			break ;
 		}
 		free(element);
 		element = NULL;
 	}
+	closedir(directory);
+
+	if (newElements != NULL && infos->time == true)
+		reOrderFolder(infos, &newElements, originalPath);
 
 	return (newElements);
 }

@@ -4,7 +4,7 @@
 
 ## === VARIABLES === ##
 
-NAME = ft_ls
+NAME = 42ls
 
 SRCS = srcs/main.c \
 	srcs/help.c \

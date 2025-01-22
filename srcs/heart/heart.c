@@ -35,9 +35,24 @@ void	preList(tInfos* infos)
 		writeStr("\n", 1);
 }
 
+void	listRecursive(tInfos* infos, char** paths)
+{
+	char*	name;
+
+	for (int k = 0; paths[k] != NULL; k++)
+	{
+		name = getName(paths[k]);
+		if (name != NULL && name[getStrLen(name) - 1] == '/')
+			list(infos, paths + k, true);
+		
+		if (infos->error == 1)
+			break ;
+	}
+}
+
 void	list(tInfos* infos, char** paths, int value)
 {
-	DIR*		directory;
+	DIR*		directory = NULL;
 	char**		newPaths = NULL;
 
 	if (infos->error == 1)
@@ -49,53 +64,27 @@ void	list(tInfos* infos, char** paths, int value)
 			continue ;
 
 		directory = opendir(paths[i]);
-		if (directory == NULL)
-		{
-			printPathError(paths[i]);
-			infos->error = 2;
+		if (directory == NULL && value == true)
+			{ printPathError(paths[i]), infos->error = 2; return ; }
+		if (directory == NULL && value == false)
+			{ printPathError(paths[i]), infos->error = 2; continue ; }
 
-			if (value == true)
+		newPaths = getFolderElements(infos, directory, paths[i]);
+		if (newPaths == NULL)
+		{
+			if (value == true || infos->error == 1)
 				return ;
 			continue ;
 		}
 
 		if (value == true || i != 0)
 			writeStr("\n", 1);
-
-		if (getArrLen(paths) > 1 || infos->recursive == true || infos->title == true)
-			writeStr(paths[i], 1), writeStr(":\n", 1);
-
-		newPaths = getFolderElements(infos, directory, paths[i]);
-		if (newPaths == NULL)
-		{
-			closedir(directory);
-			if (value == true || infos->error == 1)
-				return ;
-			continue ;
-		}
-
-		if (infos->time == true)
-			reOrderFolder(infos, &newPaths, paths[i]);
-		printFolder(infos, newPaths, paths[i]);
-
-		if (infos->listing == false)
-			writeStr("\n", 1);
+		printFolder(infos, newPaths, paths + i);
 
 		if (infos->recursive == true)
-		{
-			for (int k = 0; newPaths[k] != NULL; k++)
-			{
-				char*	name = getName(newPaths[k]);
-				if (name != NULL && name[getStrLen(name) - 1] == '/')
-					list(infos, newPaths + k, true);
-				
-				if (infos->error == 1)
-					break ;
-			}
-		}
+			listRecursive(infos, newPaths);
 
 		freeArray(newPaths);
-		closedir(directory);
 
 		if (value == true || infos->error == 1)
 			return ;

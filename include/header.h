@@ -15,6 +15,9 @@
 # include <sys/stat.h>
 # include <sys/xattr.h>
 
+typedef struct dirent	tDirent;
+typedef struct stat		tStat;
+
 struct sInfos
 {
 	bool	listing;
@@ -32,9 +35,6 @@ struct sInfos
 };
 
 typedef struct sInfos	tInfos;
-
-typedef struct dirent	tDirent;
-typedef struct stat		tStat;
 
 bool	isFolder(const char* name, const unsigned type, tInfos* infos);
 bool	isSame(char* str1, const char* str2);
@@ -64,6 +64,7 @@ char*	getOthers(char** data, tStat info);
 char*	getData(char* path);
 char*	getLink(char* path);
 
+void	freeFolderElements(char** newElements, char* element);
 char**	getFolderElements(tInfos* infos, DIR* directory, char* originalPath);
 void	reOrderFolder(tInfos* infos, char*** paths, char* originalPath);
 
@@ -75,10 +76,11 @@ void	printOptionsError(const int value, const char* str);
 
 void	printElement(tInfos* infos, char* path, const bool preList);
 void	printTotal(tInfos* infos, char* originalPath, bool hidden);
-void	printFolder(tInfos* infos, char** paths, char* originalPath);
+void	printFolder(tInfos* infos, char** paths, char** originalPath);
 void*	printListing(char* path, char* name);
 
 void	preList(tInfos* infos);
+void	listRecursive(tInfos* infos, char** paths);
 void	list(tInfos* infos, char** paths, int value);
 
 void	searchForPaths(char** argv, tInfos* infos);
