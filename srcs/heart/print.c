@@ -2,7 +2,7 @@
 
 void	printPathError(const char* element)
 {
-	writeStr("ft_ls: unable to access '", 2);
+	writeStr("42ls: unable to access '", 2);
 	writeStr(element, 2);
 	writeStr("': ", 2);
 
@@ -13,17 +13,17 @@ void	printOptionsError(const int value, const char* str)
 {
 	if (value == 0)
 	{
-		writeStr("ft_ls: option '", 2);
+		writeStr("42ls: option '", 2);
 		writeStr(str, 2);
 		writeStr("' was not recognized.\n", 2);
 	}
 	if (value == 1)
 	{
-		writeStr("ft_ls: invalid option -- '", 2);
+		writeStr("42ls: invalid option -- '", 2);
 		writeStr(str, 2);
 		writeStr("'\n", 2);
 	}
-	writeStr("Type 'ft_ls --help' for more informations.\n", 2);
+	writeStr("Type '42ls --help' for more informations.\n", 2);
 }
 
 void	printElement(tInfos* infos, char* path, const bool preList)
