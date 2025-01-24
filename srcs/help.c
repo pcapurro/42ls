@@ -2,7 +2,7 @@
 
 void	printHelp(void)
 {
-	writeStr("Usage: ./ft_ls [paths] [options]\n", 1);
+	writeStr("Usage: ./42ls [paths] [options]\n", 1);
 	writeStr("Supported options: -l, -R, -a, -r and -t.\n", 1);
 }
 
